@@ -114,30 +114,68 @@ const Footer = () => (
         </div>
 
         {/* Contact */}
-        <div>
-          <h4 className="font-heading font-bold text-sm uppercase tracking-wider mb-5">Get in Touch</h4>
-          <ul className="space-y-4 text-sm">
-            <li className="flex items-start gap-3">
-              <Phone className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-              <div>
-                <div className="text-white/90">+94 (0) 11 MEDI-HUB</div>
-                <div className="text-xs text-white/50">24/7 Travel Assistance</div>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <Mail className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-              <div className="text-white/90">care@medihub.lk</div>
-            </li>
-            <li className="flex items-start gap-3">
-              <MapPin className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
-              <div className="text-white/90 text-sm leading-relaxed">
-                Migration Health Centre,
-                <br />
-                Colombo, Sri Lanka
-              </div>
-            </li>
-          </ul>
+        {/* Contact */}
+<div>
+  <h4 className="font-heading font-bold text-sm uppercase tracking-wider mb-5">
+    Get in Touch
+  </h4>
+
+  <ul className="space-y-4 text-sm">
+    
+    {/* Phone */}
+    <li className="flex items-start gap-3">
+      <Phone className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+      <div>
+        <a 
+          href="tel:+94112267777" 
+          className="text-white/90 hover:text-emerald-400 transition"
+        >
+          011 226 7777
+        </a>
+        <div className="text-xs text-white/50">
+          24/7 Travel Assistance
         </div>
+      </div>
+    </li>
+
+    {/* Emails */}
+<li className="flex items-start gap-3">
+  <Mail className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+  <a 
+    href="mailto:info@medihub.lk" 
+    className="text-white/90 hover:text-emerald-400 transition"
+  >
+    info@medihub.lk
+  </a>
+</li>
+
+<li className="flex items-start gap-3">
+  <Mail className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+  <a 
+    href="mailto:hr@medihub.lk" 
+    className="text-white/90 hover:text-emerald-400 transition"
+  >
+    hr@medihub.lk
+  </a>
+</li>
+
+    {/* Address */}
+    <li className="flex items-start gap-3">
+      <MapPin className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+      <a
+  href="https://maps.app.goo.gl/c65HbJxsjxZFsu4L6"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="text-white/90 text-sm leading-relaxed hover:text-emerald-400 transition"
+>
+  548/1, Awissawella Road,
+  <br />
+  Wellampitiya, Sri Lanka
+</a>
+    </li>
+
+  </ul>
+</div>
       </div>
 
       {/* Bottom */}
