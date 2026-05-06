@@ -1,0 +1,330 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* MEDIHUB brand palette — derived from official Branding Guidelines:
+       teal #42BEAD (primary), cyan #40C7F4 (accent), red #BE1E2D (destructive),
+       dark teal #005155 (slate-dark). */
+    --background: 180 33% 98%;
+    --foreground: 184 100% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 184 100% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 184 100% 12%;
+
+    --primary: 172 49% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 180 30% 94%;
+    --secondary-foreground: 184 100% 17%;
+
+    --muted: 180 20% 95%;
+    --muted-foreground: 184 15% 40%;
+
+    --accent: 195 89% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 355 73% 43%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 180 18% 88%;
+    --input: 180 18% 88%;
+    --ring: 172 49% 50%;
+
+    --radius: 0.625rem;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 184 100% 12%;
+    --sidebar-primary: 172 49% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 180 30% 96%;
+    --sidebar-accent-foreground: 184 100% 12%;
+    --sidebar-border: 180 18% 88%;
+    --sidebar-ring: 172 49% 50%;
+
+    --surface-elevated: 0 0% 100%;
+    --slate-dark: 183 100% 17%;
+    --gold: 195 89% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('/premium-texture.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.12; /* Subtle presence */
+    mix-blend-mode: multiply; /* Blends dark texture areas with the bg cleanly */
+    pointer-events: none; /* Allows clicks to pass through */
+    z-index: -1; 
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-20 md:py-28 px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-label {
+    @apply text-primary text-sm font-semibold tracking-widest uppercase mb-3 block;
+  }
+
+  .section-title {
+    @apply font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight;
+  }
+
+  .section-subtitle {
+    @apply text-muted-foreground text-lg max-w-2xl leading-relaxed mt-4;
+  }
+
+  .premium-card {
+    @apply bg-card border border-border rounded-2xl shadow-sm transition-all duration-300;
+  }
+
+  .premium-card-hover {
+    @apply premium-card hover:shadow-xl hover:shadow-primary/10 hover:border-primary/25 hover:-translate-y-1 shine-on-hover;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground font-semibold px-7 py-3.5 rounded-xl
+           shadow-sm hover:shadow-lg hover:shadow-primary/30
+           transition-all duration-300 hover:-translate-y-0.5 inline-flex items-center gap-2
+           shine-on-hover;
+  }
+
+  .btn-outline {
+    @apply border-2 border-foreground/20 text-foreground font-semibold px-7 py-3.5 rounded-xl
+           hover:border-primary hover:text-primary bg-transparent
+           transition-all duration-300 hover:-translate-y-0.5 inline-flex items-center gap-2;
+  }
+
+  .gold-accent {
+    color: hsl(var(--gold));
+  }
+
+  .gold-bg {
+    background-color: hsl(var(--gold));
+  }
+
+  .mask-fade {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40 shadow-xl;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-brand-teal via-primary to-brand-cyan bg-clip-text text-transparent;
+  }
+
+  .grid-pattern {
+    background-image: linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* ── Premium animation utilities ─────────────────────────────────── */
+
+  /* Animated brand gradient text. Apply to a span/word for a subtle,
+     continuous gradient shimmer. */
+  .gradient-text-animated {
+    background-image: linear-gradient(
+      90deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--accent)) 35%,
+      #6ee7b7 65%,
+      hsl(var(--primary)) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
+    animation: gradient-shift 8s linear infinite;
+  }
+
+  /* Hover light-sweep across cards/buttons. Add to any element with
+     `position: relative; overflow: hidden;` (most cards already have this). */
+  .shine-on-hover {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .shine-on-hover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.45) 50%,
+      transparent 70%
+    );
+    transform: translateX(-120%);
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 1;
+  }
+  .shine-on-hover:hover::after {
+    transform: translateX(120%);
+  }
+
+  /* Soft pulsing halo for primary CTAs to draw the eye (live, but subtle). */
+  .pulse-glow {
+    position: relative;
+  }
+  .pulse-glow::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    background: radial-gradient(
+      circle,
+      hsl(var(--primary) / 0.45),
+      transparent 70%
+    );
+    z-index: -1;
+    filter: blur(12px);
+    animation: pulse-glow 2.6s ease-in-out infinite;
+  }
+
+  /* Ambient orb base + per-orb tuning. Used by <AmbientOrbs />.
+     Lower opacity keeps the soft-light blend gentle on top of content. */
+  .ambient-orb {
+    position: absolute;
+    display: block;
+    border-radius: 9999px;
+    filter: blur(80px);
+    opacity: 0.45;
+    will-change: transform;
+  }
+  .ambient-orb--a {
+    top: 8%;
+    left: 6%;
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, #42BEAD 0%, transparent 65%);
+    animation: orb-float-a 22s ease-in-out infinite;
+  }
+  .ambient-orb--b {
+    top: 38%;
+    right: 4%;
+    width: 460px;
+    height: 460px;
+    background: radial-gradient(circle, #40C7F4 0%, transparent 65%);
+    animation: orb-float-b 28s ease-in-out infinite;
+  }
+  .ambient-orb--c {
+    bottom: 10%;
+    left: 30%;
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, #6ee7b7 0%, transparent 65%);
+    animation: orb-float-c 26s ease-in-out infinite;
+  }
+  .ambient-orb--d {
+    top: 60%;
+    left: 12%;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, #BAE6FD 0%, transparent 65%);
+    animation: orb-float-d 24s ease-in-out infinite;
+  }
+}
+
+/* ── Keyframes ───────────────────────────────────────────────────────── */
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.55; transform: scale(1);    }
+  50%      { opacity: 0.95; transform: scale(1.08); }
+}
+
+@keyframes orb-float-a {
+  0%, 100% { transform: translate(0, 0)       scale(1);    }
+  50%      { transform: translate(60px, -40px) scale(1.08); }
+}
+@keyframes orb-float-b {
+  0%, 100% { transform: translate(0, 0)        scale(1);    }
+  50%      { transform: translate(-70px, 50px)  scale(1.12); }
+}
+@keyframes orb-float-c {
+  0%, 100% { transform: translate(0, 0)        scale(1);    }
+  50%      { transform: translate(50px, -60px)  scale(1.06); }
+}
+@keyframes orb-float-d {
+  0%, 100% { transform: translate(0, 0)        scale(1);    }
+  50%      { transform: translate(-40px, -30px) scale(1.10); }
+}
+
+/* Periodic sheen sweep across the announcement banner. Sits hidden most of
+   the time, briefly glides across, repeats — eye-catching without being
+   constantly distracting. */
+@keyframes announcement-sheen {
+  0%, 60%   { transform: translateX(-150%) skewX(-12deg); }
+  100%      { transform: translateX(450%)  skewX(-12deg); }
+}
+.announcement-sheen {
+  animation: announcement-sheen 4.5s ease-in-out infinite;
+}
+
+/* ScrollGlobe nav-label fade-out (used by landing-page.tsx) */
+@keyframes fadeOutLabel {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(0.5rem) scale(0.95);
+  }
+}
+.animate-fadeOut {
+  animation: fadeOutLabel 3s ease-in-out forwards;
+}
+
+/* Respect reduced-motion preference. */
+@media (prefers-reduced-motion: reduce) {
+  .ambient-orb,
+  .gradient-text-animated,
+  .pulse-glow::before,
+  .shine-on-hover::after,
+  .animate-fadeOut,
+  .announcement-sheen {
+    animation: none !important;
+    transition: none !important;
+  }
+}
