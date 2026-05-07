@@ -359,13 +359,10 @@ const BookingModal = ({ isOpen, onClose, prefill }: BookingModalProps) => {
               />
 
               <div className="relative">
-                <div className="flex items-center gap-2.5 mb-10">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-teal to-brand-cyan flex items-center justify-center shadow-lg">
-                    <Plane className="w-4 h-4 text-white" />
+                <div className="flex items-center gap-3 mb-10">
+                  <div className="flex items-center justify-center overflow-hidden">
+                    <img src="/medihub_logo.png" alt="MEDIHUB logo" className="w-44 h-auto object-contain" />
                   </div>
-                  <span className="font-heading text-base font-extrabold tracking-tight">
-                    MEDI<span className="text-brand-cyan">HUB</span>
-                  </span>
                 </div>
 
                 <span className="inline-block text-[10px] uppercase tracking-[0.3em] font-bold text-brand-teal mb-4">

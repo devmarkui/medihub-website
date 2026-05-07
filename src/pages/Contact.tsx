@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import PageHero from "@/components/PageHero";
+import AuroraBackground from "@/components/AuroraBackground";
 
 const contactCards = [
   {
@@ -183,7 +184,7 @@ const ContactSection = () => {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-24 px-4 sm:px-6 lg:px-8 bg-white relative overflow-hidden">
+    <section ref={ref} className="py-24 px-4 sm:px-6 lg:px-8 bg-white relative overflow-visible">
       <div className="max-w-7xl mx-auto">
         {/* Contact cards */}
         <motion.div
@@ -297,10 +298,8 @@ const FAQ = () => {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section ref={ref} className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-100/40 rounded-full blur-[120px]" />
-
-      <div className="max-w-4xl mx-auto relative">
+    <AuroraBackground className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50 to-white relative">
+      <div ref={ref} className="max-w-4xl mx-auto relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -357,7 +356,7 @@ const FAQ = () => {
           ))}
         </div>
       </div>
-    </section>
+    </AuroraBackground>
   );
 };
 

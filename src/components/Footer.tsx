@@ -57,16 +57,8 @@ const Footer = () => (
         {/* Brand */}
         <div className="lg:col-span-1">
           <Link to="/" className="flex items-center gap-2.5 mb-5 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-emerald-600 flex items-center justify-center shadow-lg shadow-primary/30">
-              <Plane className="w-5 h-5 text-white -rotate-12" />
-            </div>
-            <div className="flex flex-col leading-none">
-              <span className="font-heading font-extrabold text-xl">
-                MEDI<span className="text-emerald-400">HUB</span>
-              </span>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/40 font-semibold mt-0.5">
-                Migration Health
-              </span>
+              <div className="w-40 h-20 flex items-center justify-center overflow-hidden">
+              <img src="/medihub_logo.png" alt="MEDIHUB logo" className="w-40 h-auto object-contain" />
             </div>
           </Link>
           <p className="text-white/60 text-sm leading-relaxed mb-5">

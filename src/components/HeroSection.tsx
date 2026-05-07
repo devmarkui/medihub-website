@@ -11,7 +11,7 @@ const stats = [
 
 const HeroSection = ({ onBookClick }: { onBookClick: () => void }) => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center overflow-visible">
       {/* Background */}
       <div className="absolute inset-0">
         <img src={heroBg} alt="MEDIHUB Migration Health Hub" className="w-full h-full object-cover" />
@@ -27,10 +27,10 @@ const HeroSection = ({ onBookClick }: { onBookClick: () => void }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-7"
+            className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-7 mt-12"
           >
             <div className="w-2 h-2 rounded-full bg-primary" />
-            <span className="text-sm text-white/90 font-medium">Sri Lanka's First Dedicated Migration Health Hub</span>
+            <span className="text-sm text-white/90 font-medium">Healing Hearts Caring Hands.</span>
           </motion.div>
 
           <motion.h1
@@ -39,8 +39,8 @@ const HeroSection = ({ onBookClick }: { onBookClick: () => void }) => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] mb-5"
           >
-            Healing Hearts.{" "}
-            <span className="text-primary">Caring Hands.</span>
+            Sri Lanka's First Dedicated{" "}
+            <span className="text-primary">Migration Health Hub.</span>
           </motion.h1>
 
           <motion.p

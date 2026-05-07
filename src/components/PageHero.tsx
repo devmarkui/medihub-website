@@ -23,7 +23,7 @@ const PageHero = ({
   imageAlt = "MEDIHUB clinical team",
 }: PageHeroProps) => {
   return (
-    <section className="relative overflow-hidden bg-brand-dark min-h-[680px] lg:min-h-[720px]">
+    <section className="relative overflow-visible bg-brand-dark min-h-[680px] lg:min-h-[720px]">
       {/* ── Full-bleed background image with slow Ken Burns ── */}
       <motion.div
         initial={{ opacity: 0, scale: 1.08 }}
