@@ -1,6 +1,6 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { useOutletContext, useSearchParams, useLocation } from "react-router-dom";
+import { useOutletContext, useSearchParams, useLocation, useNavigate } from "react-router-dom";
 import {
   PlaneTakeoff,
   PlaneLanding,
@@ -30,6 +30,9 @@ import {
   ShieldCheck,
   ChevronDown,
   Languages,
+  Sparkles,
+  Check,
+  X,
 } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import { CardStack } from "@/components/CardStack";
@@ -147,6 +150,12 @@ const clinicServices = [
     title: "General Consultations",
     short: "Walk-in or scheduled GP visits, family medicine for all ages.",
     desc: "Walk-in and scheduled GP consultations — common illnesses, minor injuries, prescriptions, referrals, and family medicine for all age groups.",
+    bullets: [
+      "Walk-in or scheduled visits",
+      "Family medicine for all ages",
+      "Common illnesses & minor injuries",
+      "Prescriptions and referrals",
+    ],
   },
   {
     slug: "laboratory-services",
@@ -155,6 +164,12 @@ const clinicServices = [
     title: "Laboratory Services",
     short: "Full-service medical lab — fast, accurate results, every day.",
     desc: "Full-service medical laboratory — haematology, clinical chemistry, microbiology, hormone assays, and infectious disease testing with rapid turnaround.",
+    bullets: [
+      "Haematology, biochemistry and microbiology",
+      "Hormone assays and infectious disease panels",
+      "Same-day reporting for routine investigations",
+      "Digital reports with physician review",
+    ],
   },
   {
     slug: "health-checkup-packages",
@@ -163,6 +178,12 @@ const clinicServices = [
     title: "Health Check-up Packages",
     short: "Basic, executive and full-body wellness screenings.",
     desc: "Comprehensive wellness screenings — basic, executive, and full-body packages including cardiac, metabolic, liver, and kidney assessments.",
+    bullets: [
+      "Basic, executive and full-body packages",
+      "Cardiac and metabolic assessments",
+      "Liver and kidney function panels",
+      "Tailored to age and risk profile",
+    ],
   },
   {
     slug: "chronic-disease-management",
@@ -171,6 +192,12 @@ const clinicServices = [
     title: "Chronic Disease Management",
     short: "Long-term care plans for diabetes, hypertension, asthma and more.",
     desc: "Ongoing care plans for diabetes, hypertension, asthma, thyroid disorders, and other long-term conditions — including monitoring, medication, and lifestyle counselling.",
+    bullets: [
+      "Diabetes and hypertension monitoring",
+      "Asthma and thyroid disorder care",
+      "Medication reviews and titration",
+      "Lifestyle and dietary counselling",
+    ],
   },
   {
     slug: "routine-vaccinations",
@@ -179,6 +206,12 @@ const clinicServices = [
     title: "Routine Vaccinations",
     short: "Adult and child immunization with up-to-date records.",
     desc: "Adult and child immunization — flu, hepatitis, MMR, tetanus, HPV, and travel-unrelated routine vaccines, with up-to-date records and reminders.",
+    bullets: [
+      "Adult and child immunization",
+      "Flu, hepatitis, MMR, tetanus, HPV",
+      "Up-to-date electronic records",
+      "Booster reminders",
+    ],
   },
   {
     slug: "diagnostic-imaging",
@@ -187,6 +220,12 @@ const clinicServices = [
     title: "Diagnostic Imaging",
     short: "On-site X-ray and ECG, with partner-network ultrasound, CT and MRI.",
     desc: "On-site chest X-ray, ECG, and partner-network access to ultrasound, CT, and MRI imaging when clinically required.",
+    bullets: [
+      "On-site chest X-ray and ECG",
+      "Partner-network ultrasound",
+      "CT and MRI when clinically required",
+      "Same-day imaging when possible",
+    ],
   },
   {
     slug: "pre-employment-insurance-medicals",
@@ -195,6 +234,12 @@ const clinicServices = [
     title: "Pre-employment & Insurance Medicals",
     short: "Standardized medicals for jobs, schools and insurance applications.",
     desc: "Standardized health assessments for local employment, school admissions, and insurance applications — fast, accurate, and properly documented.",
+    bullets: [
+      "Local employment medicals",
+      "School and university admission",
+      "Insurance application assessments",
+      "Properly documented and signed off",
+    ],
   },
   {
     slug: "specialized-testing",
@@ -203,6 +248,12 @@ const clinicServices = [
     title: "Specialized Testing",
     short: "Allergy, autoimmune and tumour-marker panels — physician-guided.",
     desc: "Specialty panels including allergy testing, vitamin and mineral assays, autoimmune markers, and tumour markers — guided by physician consultation.",
+    bullets: [
+      "Allergy and intolerance panels",
+      "Vitamin and mineral assays",
+      "Autoimmune disease markers",
+      "Tumour markers with consultation",
+    ],
   },
 ];
 
@@ -216,7 +267,7 @@ const tabs = [
 ];
 
 const TabNav = ({ active, setActive }: { active: string; setActive: (v: string) => void }) => (
-  <div className="sticky top-[76px] z-40 bg-white/85 backdrop-blur-xl border-b border-slate-200/80 -mt-16 mb-12">
+  <div className="sticky top-[72px] sm:top-[88px] lg:top-[100px] z-40 bg-white/85 backdrop-blur-xl border-b border-slate-200/80 -mt-16 mb-12">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-center">
         <div className="flex gap-1 p-1.5 bg-slate-100 rounded-full my-3 overflow-x-auto max-w-full">
@@ -374,7 +425,7 @@ const OutboundBlock = ({ onBook }: { onBook: LayoutContext["openBooking"] }) => 
                 <Globe2 className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-heading text-3xl font-extrabold text-slate-900">Migration Health & Visa Medicals</h3>
+                <h3 className="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">Migration Health & Visa Medicals</h3>
                 <p className="text-slate-500 text-sm">Mandatory health screening for work and residency visas worldwide.</p>
               </div>
             </div>
@@ -437,7 +488,7 @@ const OutboundBlock = ({ onBook }: { onBook: LayoutContext["openBooking"] }) => 
                 <FileSearch className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-heading text-3xl font-extrabold text-slate-900">Pre-Medicals</h3>
+                <h3 className="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">Pre-Medicals</h3>
                 <p className="text-slate-500 text-sm">Health optimization before your formal medical assessment.</p>
               </div>
             </div>
@@ -465,7 +516,7 @@ const OutboundBlock = ({ onBook }: { onBook: LayoutContext["openBooking"] }) => 
                 <HeartHandshake className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-heading text-3xl font-extrabold text-slate-900">Migrant Health Services — Pre-departure Care</h3>
+                <h3 className="font-heading text-xl sm:text-3xl font-extrabold text-slate-900 leading-tight">Migrant Health Services — Pre-departure Care</h3>
                 <p className="text-slate-500 text-sm">Complete health preparation for a safe journey and successful integration abroad.</p>
               </div>
             </div>
@@ -869,13 +920,37 @@ const ClinicBlock = ({ onBook }: { onBook: LayoutContext["openBooking"] }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const location = useLocation();
+  const navigate = useNavigate();
+  const stackRef = useRef<HTMLDivElement>(null);
 
   // If the URL has a hash matching a clinic slug, open the stack on that card.
   const hashSlug = location.hash.slice(1);
-  const initialIndex = Math.max(
-    0,
-    clinicServices.findIndex((s) => s.slug === hashSlug)
-  );
+  const matchedIdx = clinicServices.findIndex((s) => s.slug === hashSlug);
+  const hasDeepLink = matchedIdx >= 0;
+  const initialIndex = hasDeepLink ? matchedIdx : 0;
+
+  const [activeIdx, setActiveIdx] = useState(initialIndex);
+  // The featured "selected service" panel appears when the user arrived via
+  // a navbar deep-link. Dismissible with the × button.
+  const [showFeatured, setShowFeatured] = useState(hasDeepLink);
+  useEffect(() => {
+    setActiveIdx(initialIndex);
+    setShowFeatured(hasDeepLink);
+  }, [initialIndex, hasDeepLink]);
+  const activeService = clinicServices[activeIdx] ?? clinicServices[0];
+
+  const dismissFeatured = () => {
+    setShowFeatured(false);
+    // Strip the hash from the URL so revisiting the page from the same tab
+    // doesn't reopen the panel.
+    if (location.hash) {
+      navigate(location.pathname + location.search, { replace: true });
+    }
+  };
+
+  const scrollToStack = () => {
+    stackRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-blue-50/30 via-white to-cyan-50/30 relative overflow-hidden" ref={ref}>
@@ -912,7 +987,94 @@ const ClinicBlock = ({ onBook }: { onBook: LayoutContext["openBooking"] }) => {
           </p>
         </motion.div>
 
+        {/* Featured "Selected service" panel — only shown when user arrives
+            via the navbar's clinic/laboratory deep links. Dismissible. */}
+        <AnimatePresence>
+          {showFeatured && (
+            <motion.div
+              key={activeService.slug + "-featured"}
+              initial={{ opacity: 0, y: -8, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.98, transition: { duration: 0.25 } }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              className="mb-12 max-w-5xl mx-auto"
+            >
+              <div className="relative grid lg:grid-cols-2 gap-0 bg-white rounded-[2rem] border border-blue-100 shadow-xl shadow-blue-500/10 overflow-hidden">
+                {/* Left: image */}
+                <div className="relative h-64 lg:h-auto min-h-[260px] overflow-hidden">
+                  <img
+                    src={activeService.image}
+                    alt={activeService.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/30 via-transparent to-transparent" />
+                  <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-white/95 backdrop-blur-md px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-blue-700 shadow-md">
+                    <Sparkles className="w-3 h-3" />
+                    Selected
+                  </span>
+                </div>
+
+                {/* Right: details */}
+                <div className="relative p-6 sm:p-8 lg:p-10 flex flex-col">
+                  <button
+                    onClick={dismissFeatured}
+                    aria-label="Close selected service"
+                    className="absolute top-4 right-4 w-8 h-8 rounded-full border border-slate-200 hover:border-slate-300 hover:bg-slate-50 flex items-center justify-center text-slate-500 hover:text-slate-700 transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+
+                  <span className="text-[10px] sm:text-xs font-bold text-blue-600 uppercase tracking-[0.25em] mb-3">
+                    Clinic & Laboratory
+                  </span>
+
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-md shadow-blue-500/30">
+                      <activeService.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="font-heading text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight pr-8">
+                      {activeService.title}
+                    </h3>
+                  </div>
+
+                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-5">
+                    {activeService.desc}
+                  </p>
+
+                  <ul className="grid sm:grid-cols-2 gap-x-5 gap-y-2.5 mb-7">
+                    {activeService.bullets.map((b) => (
+                      <li key={b} className="flex items-start gap-2.5 text-sm text-slate-700">
+                        <span className="mt-0.5 flex-shrink-0 w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center">
+                          <Check className="w-2.5 h-2.5 text-blue-600" strokeWidth={3} />
+                        </span>
+                        <span className="leading-snug">{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="flex flex-wrap items-center gap-x-5 gap-y-3 mt-auto">
+                    <button
+                      onClick={() => onBook(activeService.title, "consultation")}
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold px-5 py-2.5 rounded-full shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all"
+                    >
+                      <Calendar className="w-4 h-4" />
+                      Book this service
+                    </button>
+                    <button
+                      onClick={scrollToStack}
+                      className="text-sm font-semibold text-slate-700 hover:text-blue-600 transition-colors"
+                    >
+                      See all clinic services →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <motion.div
+          ref={stackRef}
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1 }}
@@ -933,7 +1095,9 @@ const ClinicBlock = ({ onBook }: { onBook: LayoutContext["openBooking"] }) => {
             overlap={0.52}
             spreadDeg={38}
             maxVisible={5}
-            autoAdvance
+            // Don't auto-advance when the user has deep-linked to a specific
+            // service — let them read it without the stack rotating away.
+            autoAdvance={!hasDeepLink}
             intervalMs={2400}
             pauseOnHover
             springStiffness={150}
@@ -943,6 +1107,7 @@ const ClinicBlock = ({ onBook }: { onBook: LayoutContext["openBooking"] }) => {
             activeLiftPx={28}
             tiltXDeg={10}
             depthPx={130}
+            onChangeIndex={(i) => setActiveIdx(i)}
             renderCard={(item, { active }) => (
               <FanCard
                 item={item}

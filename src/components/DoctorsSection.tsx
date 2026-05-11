@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useAdminData, type Doctor } from "@/contexts/AdminDataContext";
 import ExpandOnHover, { type ExpandCardItem } from "@/components/ui/expand-cards";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 type LayoutContext = { openBooking: (service?: string, mode?: "consultation" | "migration") => void };
@@ -20,6 +21,7 @@ export const DoctorsSection = () => {
   const ctx = useOutletContext<LayoutContext>();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const isMobile = useIsMobile();
 
   // Featured doctor expands by default; otherwise the first.
   const defaultIdx = Math.max(
@@ -74,35 +76,26 @@ export const DoctorsSection = () => {
             </span>
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed">
-            Hover any card to expand it — meet the consultants leading MEDIHUB's clinical team.
+            <span className="hidden sm:inline">Hover any card</span>
+            <span className="sm:hidden">Tap any card</span>
+            {" "}to expand it — meet the consultants leading MEDIHUB's clinical team.
           </p>
         </motion.div>
 
-        {/* Expand-on-hover row (lg+) */}
+        {/* Expand-on-hover row — responsive across all viewports */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="hidden lg:block"
         >
-          <ExpandOnHover items={items} defaultIndex={defaultIdx} />
+          <ExpandOnHover
+            items={items}
+            defaultIndex={defaultIdx}
+            expandedWidth={isMobile ? "11rem" : "26rem"}
+            collapsedWidth={isMobile ? "2rem" : "5rem"}
+            height={isMobile ? "22rem" : "30rem"}
+          />
         </motion.div>
-
-        {/* Mobile / tablet fallback — horizontal scroll of standard cards */}
-        <div className="lg:hidden -mx-4 px-4">
-          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scroll-smooth">
-            {doctors.map((doctor) => (
-              <MobileDoctorCard
-                key={doctor.id}
-                doctor={doctor}
-                onBook={ctx.openBooking}
-              />
-            ))}
-          </div>
-          <p className="text-xs text-slate-400 text-center mt-2">
-            ← swipe to see more doctors →
-          </p>
-        </div>
       </div>
     </section>
   );
@@ -134,43 +127,44 @@ const ExpandedDoctor = ({
     </span>
 
     {/* Bottom info card */}
-    <div className="absolute inset-x-0 bottom-0 p-6 sm:p-7 text-white">
-      <h3 className="font-heading text-2xl sm:text-3xl font-extrabold mb-2 leading-tight drop-shadow-md">
+    <div className="absolute inset-x-0 bottom-0 p-4 sm:p-7 text-white">
+      <h3 className="font-heading text-base sm:text-3xl font-extrabold mb-1.5 sm:mb-2 leading-tight drop-shadow-md">
         {doctor.name}
       </h3>
 
       {doctor.bio && (
-        <p className="text-sm text-white/80 mb-4 leading-relaxed line-clamp-2">
+        <p className="hidden sm:block text-sm text-white/80 mb-4 leading-relaxed line-clamp-2">
           {doctor.bio}
         </p>
       )}
 
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-white/75 mb-5">
+      <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-1 sm:gap-x-4 sm:gap-y-1.5 text-[10px] sm:text-xs text-white/75 mb-3 sm:mb-5">
         <span className="inline-flex items-center gap-1.5">
-          <GraduationCap className="w-3.5 h-3.5 text-emerald-300" />
-          {doctor.qualifications.split(",")[0].trim()}
+          <GraduationCap className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
+          <span className="truncate">{doctor.qualifications.split(",")[0].trim()}</span>
         </span>
-        <span className="text-white/30">•</span>
+        <span className="hidden sm:inline text-white/30">•</span>
         <span className="inline-flex items-center gap-1.5">
-          <Calendar className="w-3.5 h-3.5 text-emerald-300" />
+          <Calendar className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
           {doctor.yearsExperience}+ yrs
         </span>
-        <span className="text-white/30">•</span>
+        <span className="hidden sm:inline text-white/30">•</span>
         <span className="inline-flex items-center gap-1.5">
-          <Languages className="w-3.5 h-3.5 text-emerald-300" />
-          {doctor.languages.join(", ")}
+          <Languages className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
+          <span className="truncate">{doctor.languages.join(", ")}</span>
         </span>
       </div>
 
       <button
         onClick={onBook}
         className={cn(
-          "group/btn inline-flex items-center gap-2 rounded-xl bg-primary text-primary-foreground font-semibold px-5 py-2.5 text-sm",
+          "group/btn inline-flex items-center gap-1.5 sm:gap-2 rounded-xl bg-primary text-primary-foreground font-semibold px-3 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm",
           "shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:bg-primary/90 transition-all duration-300"
         )}
       >
-        Book with {doctor.name.split(" ").slice(-1)[0]}
-        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
+        <span className="sm:hidden">Book</span>
+        <span className="hidden sm:inline">Book with {doctor.name.split(" ").slice(-1)[0]}</span>
+        <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover/btn:translate-x-0.5 transition-transform" />
       </button>
     </div>
   </>
@@ -193,58 +187,6 @@ const CollapsedDoctor = ({ doctor }: { doctor: Doctor }) => (
       {doctor.name.split(" ").slice(-1)[0]}
     </div>
   </>
-);
-
-// ── Mobile card ───────────────────────────────────────────────────────────
-const MobileDoctorCard = ({
-  doctor,
-  onBook,
-}: {
-  doctor: Doctor;
-  onBook: () => void;
-}) => (
-  <article className="snap-center shrink-0 w-[78vw] max-w-sm rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-sm relative">
-    <div className="relative aspect-[4/5] overflow-hidden bg-slate-100">
-      <img
-        src={doctor.photo}
-        alt={doctor.name}
-        className="absolute inset-0 h-full w-full object-cover"
-        loading="lazy"
-        onError={(e) => {
-          (e.currentTarget as HTMLImageElement).src = `https://api.dicebear.com/8.x/initials/svg?seed=${encodeURIComponent(doctor.name)}&backgroundColor=42BEAD`;
-        }}
-      />
-      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
-
-      {doctor.featured && (
-        <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-amber-400/95 px-2.5 py-1 text-[10px] font-bold text-amber-950">
-          <Star className="w-3 h-3 fill-amber-950" />
-          Featured
-        </span>
-      )}
-
-      <div className="absolute inset-x-4 bottom-4 text-white">
-        <p className="text-[10px] font-bold uppercase tracking-widest opacity-80 mb-1">
-          {doctor.specialty}
-        </p>
-        <h3 className="font-heading text-xl font-extrabold leading-tight drop-shadow-md">
-          {doctor.name}
-        </h3>
-      </div>
-    </div>
-    <div className="p-4">
-      <p className="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-3">
-        {doctor.bio}
-      </p>
-      <button
-        onClick={onBook}
-        className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-slate-900 hover:bg-primary text-white font-semibold py-2.5 text-sm transition-colors"
-      >
-        Book Appointment
-        <ArrowRight className="w-3.5 h-3.5" />
-      </button>
-    </div>
-  </article>
 );
 
 export default DoctorsSection;

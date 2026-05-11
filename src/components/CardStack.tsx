@@ -129,7 +129,6 @@ export function CardStack<T extends CardStackItem>({
 
   const maxOffset = Math.max(0, Math.floor(maxVisible / 2));
 
-  const cardSpacing = Math.max(10, Math.round(cardWidth * (1 - overlap)));
   const stepDeg = maxOffset > 0 ? spreadDeg / maxOffset : 0;
 
   const canGoPrev = loop || active > 0;
@@ -179,6 +178,34 @@ export function CardStack<T extends CardStackItem>({
     next,
   ]);
 
+  // Responsive sizing — shrink cardWidth/cardHeight to fit narrow viewports,
+  // preserving aspect ratio. Desktop keeps the original dimensions.
+  const stageRef = React.useRef<HTMLDivElement>(null);
+  const [stageWidth, setStageWidth] = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const update = () => setStageWidth(el.clientWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    window.addEventListener("resize", update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  // Reserve some breathing room so the fanned-out side cards aren't clipped.
+  const maxAllowedWidth = stageWidth ? Math.max(220, stageWidth - 24) : cardWidth;
+  const effCardWidth = Math.min(cardWidth, maxAllowedWidth);
+  const widthScale = effCardWidth / cardWidth;
+  const effCardHeight = Math.round(cardHeight * widthScale);
+  const effDepthPx = depthPx * widthScale;
+  const effActiveLiftPx = activeLiftPx * widthScale;
+  const effCardSpacing = Math.max(10, Math.round(effCardWidth * (1 - overlap)));
+
   if (!len) return null;
 
   const activeItem = items[active]!;
@@ -191,8 +218,9 @@ export function CardStack<T extends CardStackItem>({
     >
       {/* Stage */}
       <div
+        ref={stageRef}
         className="relative w-full"
-        style={{ height: Math.max(380, cardHeight + 80) }}
+        style={{ height: Math.max(280, effCardHeight + 80) }}
         tabIndex={0}
         onKeyDown={onKeyDown}
       >
@@ -221,14 +249,14 @@ export function CardStack<T extends CardStackItem>({
               if (!visible) return null;
 
               const rotateZ = off * stepDeg;
-              const x = off * cardSpacing;
-              const y = abs * 10;
-              const z = -abs * depthPx;
+              const x = off * effCardSpacing;
+              const y = abs * 10 * widthScale;
+              const z = -abs * effDepthPx;
 
               const isActive = off === 0;
 
               const scale = isActive ? activeScale : inactiveScale;
-              const lift = isActive ? -activeLiftPx : 0;
+              const lift = isActive ? -effActiveLiftPx : 0;
 
               const rotateX = isActive ? 0 : tiltXDeg;
 
@@ -246,7 +274,7 @@ export function CardStack<T extends CardStackItem>({
                       if (reduceMotion) return;
                       const travel = info.offset.x;
                       const v = info.velocity.x;
-                      const threshold = Math.min(160, cardWidth * 0.22);
+                      const threshold = Math.min(160, effCardWidth * 0.22);
 
                       if (travel > threshold || v > 650) prev();
                       else if (travel < -threshold || v < -650) next();
@@ -265,8 +293,8 @@ export function CardStack<T extends CardStackItem>({
                       : "cursor-pointer",
                   )}
                   style={{
-                    width: cardWidth,
-                    height: cardHeight,
+                    width: effCardWidth,
+                    height: effCardHeight,
                     zIndex,
                     transformStyle: "preserve-3d",
                   }}
