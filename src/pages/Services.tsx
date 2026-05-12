@@ -33,9 +33,21 @@ import {
   Sparkles,
   Check,
   X,
+  TestTube2,
+  FileCheck,
+  Brain,
+  Siren,
+  PhoneCall,
+  MessagesSquare,
+  CreditCard,
+  Download,
+  LifeBuoy,
+  UserCog,
+  FilePlus2,
 } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import { CardStack } from "@/components/CardStack";
+import { ServiceGrid, type ServiceGridItem } from "@/components/ServiceGrid";
 
 type LayoutContext = { openBooking: (service?: string, mode?: "consultation" | "migration") => void };
 
@@ -257,13 +269,58 @@ const clinicServices = [
   },
 ];
 
+/* ---- migrant outbound services (screenshot-driven) ---- */
+
+const outboundMigrantServices: ServiceGridItem[] = [
+  { icon: FileCheck, title: "Visa Medical Examination", desc: "Complete medical examination required for visa processing and migration clearance." },
+  { icon: ClipboardList, title: "Pre-Migration Health Assessment", desc: "Comprehensive health evaluation before international travel or resettlement." },
+  { icon: Activity, title: "TB Screening", desc: "Tuberculosis screening including symptom assessment, chest X-ray, and sputum testing when required." },
+  { icon: ScanLine, title: "Chest X-Ray", desc: "Digital radiology service for migration and infectious disease screening purposes." },
+  { icon: TestTube2, title: "Laboratory Testing", desc: "Blood, urine, and other laboratory investigations required for medical assessment." },
+  { icon: Syringe, title: "Vaccination Services", desc: "Administration and documentation of required and recommended vaccines." },
+  { icon: ShieldCheck, title: "Medical Clearance Certificate", desc: "Issuance of certified medical fitness reports for embassies and immigration authorities." },
+  { icon: Plane, title: "Fitness for Travel Assessment", desc: "Evaluation of an individual's physical fitness and safety for international travel." },
+  { icon: Briefcase, title: "Occupational Health Screening", desc: "Medical screening based on employment and occupational health requirements abroad." },
+  { icon: UserCog, title: "Specialist Referral", desc: "Referral to medical specialists for further assessment or treatment when indicated." },
+  { icon: Headphones, title: "Health Counselling", desc: "Guidance on health risks, travel precautions, and disease prevention during migration." },
+  { icon: FilePlus2, title: "Follow-Up Assessment", desc: "Repeat assessments or investigations for pending or abnormal medical findings." },
+];
+
+/* ---- migrant inbound services (screenshot-driven) ---- */
+
+const inboundMigrantServices: ServiceGridItem[] = [
+  { icon: ClipboardCheck, title: "Arrival Health Screening", desc: "Health screening for newly arrived migrants, travelers, or returning residents." },
+  { icon: Activity, title: "Communicable Disease Screening", desc: "Detection and management of infectious diseases to support public health safety." },
+  { icon: Syringe, title: "Vaccination Verification", desc: "Verification and updating of immunization records according to national guidelines." },
+  { icon: Stethoscope, title: "Health Consultation", desc: "General medical consultation and advice for migrants and international travelers." },
+  { icon: HeartPulse, title: "Chronic Disease Follow-Up", desc: "Monitoring and management support for ongoing medical conditions such as diabetes or hypertension." },
+  { icon: Brain, title: "Mental Health Support", desc: "Psychological support and referral services for migrant wellbeing and adjustment." },
+  { icon: Siren, title: "Emergency Medical Support", desc: "Immediate medical assistance and coordination during urgent health situations." },
+  { icon: UserCog, title: "Referral Services", desc: "Coordination with hospitals, clinics, and specialists for advanced medical care." },
+  { icon: Globe2, title: "Travel Health Advice", desc: "Preventive health guidance related to destination-specific risks and safe travel." },
+];
+
+/* ---- migrant general services (screenshot-driven) ---- */
+
+const migrantGeneralServices: ServiceGridItem[] = [
+  { icon: Calendar, title: "Appointment Booking", desc: "Online and onsite scheduling for medical examinations and consultations." },
+  { icon: FilePlus2, title: "Online Registration", desc: "Digital registration system for faster processing and service access." },
+  { icon: FileSearch, title: "Medical Records Access", desc: "Secure access to medical reports, vaccination records, and health documents." },
+  { icon: Download, title: "Report Download", desc: "Download certified medical reports and investigation results online." },
+  { icon: CreditCard, title: "Payment Portal", desc: "Secure online payment system for medical and laboratory services." },
+  { icon: LifeBuoy, title: "Help Desk", desc: "Assistance for service inquiries, appointments, and application guidance." },
+  { icon: PhoneCall, title: "Contact Support", desc: "Communication support through phone, email, or online messaging services." },
+  { icon: MessagesSquare, title: "Feedback & Complaints", desc: "Platform for submitting feedback, suggestions, and service-related concerns." },
+];
+
 /* ------------------ tabs ------------------ */
 
 const tabs = [
-  { id: "outbound", label: "Outbound", icon: PlaneTakeoff, accent: "from-emerald-500 to-teal-600", group: "Migration" },
-  { id: "inbound", label: "Inbound", icon: PlaneLanding, accent: "from-blue-500 to-cyan-600", group: "Migration" },
-  { id: "corporate", label: "Corporate", icon: Building2, accent: "from-emerald-500 to-teal-600", group: "Migration" },
-  { id: "clinic", label: "Clinic", icon: Microscope, accent: "from-blue-500 to-cyan-600", group: "Clinic" },
+  { id: "outbound", label: "Outbound", icon: PlaneTakeoff, accent: "from-emerald-500 to-teal-600", group: "Migrant" },
+  { id: "inbound", label: "Inbound", icon: PlaneLanding, accent: "from-blue-500 to-cyan-600", group: "Migrant" },
+  { id: "general", label: "General", icon: Briefcase, accent: "from-teal-500 to-emerald-600", group: "Migrant" },
+  { id: "corporate", label: "Corporate", icon: Building2, accent: "from-amber-500 to-orange-600", group: "Migrant" },
+  { id: "clinic", label: "Laboratory", icon: Microscope, accent: "from-blue-500 to-cyan-600", group: "Laboratory" },
 ];
 
 const TabNav = ({ active, setActive }: { active: string; setActive: (v: string) => void }) => (
@@ -393,6 +450,7 @@ const OutboundBlock = ({ onBook }: { onBook: LayoutContext["openBooking"] }) => 
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
+    <>
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white relative overflow-hidden" ref={ref}>
       <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-100/40 rounded-full blur-[120px]" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-teal-100/40 rounded-full blur-[120px]" />
@@ -567,6 +625,24 @@ const OutboundBlock = ({ onBook }: { onBook: LayoutContext["openBooking"] }) => 
         </div>
       </div>
     </section>
+
+    <ServiceGrid
+      eyebrow="Complete Outbound Service Catalogue"
+      title={
+        <>
+          Every outbound service —{" "}
+          <span className="bg-gradient-to-r from-emerald-500 to-teal-600 bg-clip-text text-transparent">
+            at a glance.
+          </span>
+        </>
+      }
+      description="A full directory of medical, screening, and documentation services we offer for outbound migrants."
+      items={outboundMigrantServices}
+      accent="emerald"
+      background="muted"
+      columns={3}
+    />
+    </>
   );
 };
 
@@ -706,6 +782,7 @@ const InboundBlock = () => {
   const t = inboundI18n[lang];
 
   return (
+    <>
     <section
       className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-blue-50/30 via-white to-blue-50/30 relative overflow-hidden"
       ref={ref}
@@ -815,6 +892,71 @@ const InboundBlock = () => {
         </div>
       </div>
     </section>
+
+    <ServiceGrid
+      eyebrow="Complete Inbound Service Catalogue"
+      title={
+        <>
+          Care for those{" "}
+          <span className="bg-gradient-to-r from-blue-500 to-cyan-600 bg-clip-text text-transparent">
+            arriving here.
+          </span>
+        </>
+      }
+      description="The full set of inbound migrant services — from arrival screening to ongoing care and emergency support."
+      items={inboundMigrantServices}
+      accent="blue"
+      background="white"
+      columns={3}
+    />
+    </>
+  );
+};
+
+/* ------------------ migrant general ------------------ */
+
+const MigrantGeneralBlock = ({ onBook }: { onBook: LayoutContext["openBooking"] }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <>
+      <ServiceGrid
+        eyebrow="Migrant General Services"
+        title={
+          <>
+            Everything you need —{" "}
+            <span className="bg-gradient-to-r from-teal-500 to-emerald-600 bg-clip-text text-transparent">
+              in one place.
+            </span>
+          </>
+        }
+        description="Bookings, records, payments, and support — the operational backbone that makes accessing your migrant health services effortless."
+        items={migrantGeneralServices}
+        accent="teal"
+        background="white"
+        columns={4}
+      />
+
+      <section ref={ref} className="pb-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+          className="max-w-3xl mx-auto bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border border-teal-200 rounded-3xl p-8 text-center"
+        >
+          <h3 className="font-heading text-2xl font-extrabold text-slate-900 mb-3">Need help getting started?</h3>
+          <p className="text-slate-600 text-sm mb-6">Our help desk and contact support are available to guide you through every step.</p>
+          <button
+            onClick={() => onBook()}
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:-translate-y-0.5 transition-transform"
+          >
+            <Calendar className="w-4 h-4" />
+            Book an appointment
+          </button>
+        </motion.div>
+      </section>
+    </>
   );
 };
 
@@ -1209,6 +1351,14 @@ const Services = () => {
         </span>
       </>
     ),
+    general: (
+      <>
+        General services —{" "}
+        <span className="bg-gradient-to-r from-teal-400 to-emerald-300 bg-clip-text text-transparent">
+          made simple.
+        </span>
+      </>
+    ),
     corporate: (
       <>
         Moving people at scale?{" "}
@@ -1230,6 +1380,7 @@ const Services = () => {
   const heroDescription: Record<string, string> = {
     outbound: "From visa medicals to complete pre-departure preparation — every form, every screening, every certificate handled by specialists.",
     inbound: "Arrival check-ups, vaccinations, chronic care, and telehealth — supporting your healthy integration into Sri Lanka.",
+    general: "Appointments, records, payments, help desk, and support — the operational backbone of your migrant health journey.",
     corporate: "Pre-employment programmes, group screenings, and recruitment-agency partnerships — built for organizations moving people across borders.",
     clinic: "General consultations, laboratory diagnostics, and family health check-ups — a fully equipped clinic and lab beyond migration medicine.",
   };
@@ -1237,6 +1388,7 @@ const Services = () => {
   const heroImage: Record<string, string> = {
     outbound: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1400&q=80",
     inbound: "https://images.unsplash.com/photo-1632053001113-df97cf03307c?auto=format&fit=crop&w=1400&q=80",
+    general: "https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=1400&q=80",
     corporate: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1400&q=80",
     clinic: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1400&q=80",
   };
@@ -1254,6 +1406,7 @@ const Services = () => {
       <TabNav active={active} setActive={handleSetActive} />
       {active === "outbound" && <OutboundBlock onBook={ctx.openBooking} />}
       {active === "inbound" && <InboundBlock />}
+      {active === "general" && <MigrantGeneralBlock onBook={ctx.openBooking} />}
       {active === "corporate" && <CorporateBlock onBook={ctx.openBooking} />}
       {active === "clinic" && <ClinicBlock onBook={ctx.openBooking} />}
     </>

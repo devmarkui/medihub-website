@@ -7,6 +7,7 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
+import Travels from "./pages/Travels";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import { AdminDataProvider } from "@/contexts/AdminDataContext";
@@ -32,6 +33,7 @@ const App = () => (
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/services" element={<Services />} />
+              <Route path="/travels" element={<Travels />} />
               <Route path="/contact" element={<Contact />} />
             </Route>
 
