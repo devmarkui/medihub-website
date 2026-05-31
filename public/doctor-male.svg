@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bgDocM" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e6f7fb"/>
+      <stop offset="100%" stop-color="#cdeef6"/>
+    </linearGradient>
+    <linearGradient id="silDocM" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a7a96"/>
+      <stop offset="100%" stop-color="#0d6f87"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bgDocM)"/>
+  <g opacity="0.08" fill="#0a7a96">
+    <circle cx="120" cy="120" r="120"/>
+    <circle cx="680" cy="680" r="160"/>
+  </g>
+  <g transform="translate(400 420)">
+    <!-- Head -->
+    <circle cx="0" cy="-160" r="140" fill="url(#silDocM)"/>
+    <!-- Neck -->
+    <rect x="-38" y="-30" width="76" height="40" fill="url(#silDocM)"/>
+    <!-- Shoulders / coat -->
+    <path d="M -300 380
+             C -300 180, -180 40, 0 40
+             C 180 40, 300 180, 300 380 Z" fill="url(#silDocM)"/>
+    <!-- Inner collar opening (white shirt + tie) -->
+    <path d="M -60 60 L -22 130 L -8 380 L 8 380 L 22 130 L 60 60 L 36 30 L 0 80 L -36 30 Z" fill="#ffffff"/>
+    <!-- Tie -->
+    <path d="M -12 130 L 12 130 L 18 380 L -18 380 Z" fill="url(#silDocM)"/>
+    <path d="M -12 130 L 0 105 L 12 130 L 0 160 Z" fill="url(#silDocM)"/>
+    <!-- Stethoscope tubes -->
+    <path d="M -90 90 C -150 160, -180 240, -150 320" stroke="#ffffff" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <path d="M 90 90 C 150 160, 180 240, 150 320" stroke="#ffffff" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <!-- Stethoscope earpieces -->
+    <circle cx="-90" cy="86" r="10" fill="#ffffff"/>
+    <circle cx="90" cy="86" r="10" fill="#ffffff"/>
+    <!-- Stethoscope chest piece (left) -->
+    <circle cx="-150" cy="330" r="26" fill="#ffffff"/>
+    <circle cx="-150" cy="330" r="14" fill="url(#silDocM)"/>
+    <!-- Stethoscope chest piece (right) -->
+    <circle cx="150" cy="330" r="26" fill="#ffffff"/>
+    <circle cx="150" cy="330" r="14" fill="url(#silDocM)"/>
+  </g>
+</svg>

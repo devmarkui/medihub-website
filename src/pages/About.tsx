@@ -12,11 +12,6 @@ import {
   Users,
   Calendar,
   ArrowRight,
-  Stethoscope,
-  FileCheck,
-  PlaneTakeoff,
-  MapPin,
-  PlaneLanding,
   Compass,
 } from "lucide-react";
 import PageHero from "@/components/PageHero";
@@ -118,13 +113,23 @@ const VisionMission = () => {
             whileHover={{ y: -8 }}
             className="relative bg-white border border-slate-200 rounded-3xl p-8 hover:shadow-2xl transition-all duration-500 overflow-hidden group"
           >
+            <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-primary via-emerald-500 to-teal-500" />
             <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-emerald-200/40 blur-3xl group-hover:bg-emerald-200/60 transition-all" />
             <div className="relative">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-emerald-600 flex items-center justify-center shadow-xl shadow-primary/30 mb-6">
-                <Eye className="w-7 h-7 text-white" />
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-emerald-600 flex items-center justify-center shadow-xl shadow-primary/30">
+                  <Eye className="w-7 h-7 text-white" />
+                </div>
+                <div className="flex-1">
+                  <span className="block text-[10px] uppercase tracking-[0.3em] font-bold text-primary/70">01</span>
+                  <h3 className="font-heading text-3xl font-black leading-none bg-gradient-to-r from-primary to-emerald-700 bg-clip-text text-transparent">
+                    VISION
+                  </h3>
+                </div>
               </div>
-              <span className="text-xs uppercase tracking-widest font-bold text-primary mb-2 block">Vision</span>
-              <h3 className="font-heading text-2xl font-extrabold text-slate-900 mb-3">Our North Star</h3>
+              <div className="inline-block bg-emerald-50 border-l-4 border-primary px-3 py-1.5 rounded-r-lg mb-4">
+                <span className="font-heading text-sm font-extrabold text-slate-800 uppercase tracking-wider">Our North Star</span>
+              </div>
               <p className="text-slate-600 leading-relaxed">
                 To be the leading dedicated migration health centre in <strong>South Asia</strong> — recognized for clinical excellence, compassionate care, and seamless health support for every migrant across every border.
               </p>
@@ -138,14 +143,24 @@ const VisionMission = () => {
             whileHover={{ y: -8 }}
             className="relative bg-gradient-to-br from-primary to-emerald-700 text-white rounded-3xl p-8 shadow-2xl shadow-primary/30 overflow-hidden group lg:scale-105"
           >
+            <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-amber-300 via-amber-400 to-amber-300" />
             <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-amber-300/30 blur-3xl" />
             <div className="absolute -bottom-20 -left-20 w-48 h-48 rounded-full bg-teal-400/30 blur-3xl" />
             <div className="relative">
-              <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center mb-6">
-                <Target className="w-7 h-7 text-white" />
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center">
+                  <Target className="w-7 h-7 text-white" />
+                </div>
+                <div className="flex-1">
+                  <span className="block text-[10px] uppercase tracking-[0.3em] font-bold text-amber-200">02</span>
+                  <h3 className="font-heading text-3xl font-black leading-none bg-gradient-to-r from-amber-200 to-white bg-clip-text text-transparent">
+                    MISSION
+                  </h3>
+                </div>
               </div>
-              <span className="text-xs uppercase tracking-widest font-bold text-amber-200 mb-2 block">Mission</span>
-              <h3 className="font-heading text-2xl font-extrabold mb-3">Our Daily Promise</h3>
+              <div className="inline-block bg-white/15 backdrop-blur-sm border-l-4 border-amber-300 px-3 py-1.5 rounded-r-lg mb-4">
+                <span className="font-heading text-sm font-extrabold text-white uppercase tracking-wider">Our Daily Promise</span>
+              </div>
               <p className="text-white/85 leading-relaxed">
                 To provide <strong>comprehensive, expert, and accessible</strong> health services tailored to the unique needs of migrants — empowering individuals with the health knowledge, documentation, and care they need to migrate safely, confidently, and successfully.
               </p>
@@ -159,13 +174,23 @@ const VisionMission = () => {
             whileHover={{ y: -8 }}
             className="relative bg-white border border-slate-200 rounded-3xl p-8 hover:shadow-2xl transition-all duration-500 overflow-hidden group"
           >
+            <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500" />
             <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-amber-200/40 blur-3xl group-hover:bg-amber-200/60 transition-all" />
             <div className="relative">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-xl shadow-amber-500/30 mb-6">
-                <Sparkles className="w-7 h-7 text-white" />
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-xl shadow-amber-500/30">
+                  <Sparkles className="w-7 h-7 text-white" />
+                </div>
+                <div className="flex-1">
+                  <span className="block text-[10px] uppercase tracking-[0.3em] font-bold text-amber-600/80">03</span>
+                  <h3 className="font-heading text-3xl font-black leading-none bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+                    VALUES
+                  </h3>
+                </div>
               </div>
-              <span className="text-xs uppercase tracking-widest font-bold text-amber-600 mb-2 block">Values</span>
-              <h3 className="font-heading text-2xl font-extrabold text-slate-900 mb-3">Our Principles</h3>
+              <div className="inline-block bg-amber-50 border-l-4 border-amber-500 px-3 py-1.5 rounded-r-lg mb-4">
+                <span className="font-heading text-sm font-extrabold text-slate-800 uppercase tracking-wider">Our Principles</span>
+              </div>
               <p className="text-sm text-slate-600 mb-4">The principles that guide every interaction at MEDIHUB:</p>
               <div className="grid grid-cols-2 gap-2">
                 {values.map((v) => (
@@ -190,11 +215,31 @@ const Journey = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const stages = [
-    { icon: Stethoscope, title: "Pre-departure", desc: "Health prep, screenings, vaccines, travel fitness, and MEDIF — required when a passenger has a significant medical condition or needs special assistance." },
-    { icon: FileCheck, title: "Visa Medicals", desc: "Official country-specific health assessments compliant with destination country requirements." },
-    { icon: PlaneTakeoff, title: "In Transit", desc: "Telehealth support and trained medical escorts for vulnerable travellers throughout the journey." },
-    { icon: MapPin, title: "At Destination", desc: "Health advisory, chronic care, telehealth, and long-term medication management abroad." },
-    { icon: PlaneLanding, title: "Inbound Support", desc: "Emergency care, check-ups, vaccinations, and integration support for migrants arriving here." },
+    {
+      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80",
+      title: "Pre-departure",
+      desc: "Health prep, screenings, vaccines, travel fitness, and MEDIF — required when a passenger has a significant medical condition or needs special assistance.",
+    },
+    {
+      image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=900&q=80",
+      title: "Visa Medicals",
+      desc: "Official country-specific health assessments compliant with destination country requirements.",
+    },
+    {
+      image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=900&q=80",
+      title: "In Transit",
+      desc: "Telehealth support and trained medical escorts for vulnerable travellers throughout the journey.",
+    },
+    {
+      image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=900&q=80",
+      title: "At Destination",
+      desc: "Health advisory, chronic care, telehealth, and long-term medication management abroad.",
+    },
+    {
+      image: "https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?auto=format&fit=crop&w=900&q=80",
+      title: "Inbound Support",
+      desc: "Emergency care, check-ups, vaccinations, and integration support for migrants arriving here.",
+    },
   ];
 
   return (
@@ -220,21 +265,27 @@ const Journey = () => {
           <p className="text-lg text-slate-600">We support you at every stage — before, during, and after your move.</p>
         </motion.div>
 
-        {/* Desktop horizontal timeline */}
+        {/* Desktop horizontal timeline with pictures */}
         <div className="hidden lg:block relative">
-          <div className="absolute top-12 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-primary/10 via-primary/40 to-primary/10" />
-          <div className="grid grid-cols-5 gap-4">
+          <div className="absolute top-[110px] left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-primary/10 via-primary/40 to-primary/10" />
+          <div className="grid grid-cols-5 gap-5">
             {stages.map((stage, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 30 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.12 * i }}
-                className="flex flex-col items-center text-center"
+                className="flex flex-col items-center text-center group"
               >
-                <div className="relative w-24 h-24 rounded-full bg-white border-4 border-emerald-100 shadow-lg flex items-center justify-center mb-5 group hover:border-primary transition-all duration-300">
-                  <stage.icon className="w-10 h-10 text-primary group-hover:scale-110 transition-transform duration-300" />
-                  <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gradient-to-br from-primary to-emerald-600 text-white text-xs font-extrabold flex items-center justify-center shadow-lg">
+                <div className="relative w-[180px] h-[180px] rounded-3xl overflow-hidden bg-white border-4 border-white shadow-xl mb-5 ring-4 ring-emerald-100 group-hover:ring-primary/40 transition-all duration-300">
+                  <img
+                    src={stage.image}
+                    alt={stage.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent" />
+                  <span className="absolute -top-2 -right-2 w-10 h-10 rounded-full bg-gradient-to-br from-primary to-emerald-600 text-white text-sm font-extrabold flex items-center justify-center shadow-lg ring-4 ring-white">
                     {i + 1}
                   </span>
                 </div>
@@ -245,23 +296,28 @@ const Journey = () => {
           </div>
         </div>
 
-        {/* Mobile vertical */}
-        <div className="lg:hidden space-y-4">
+        {/* Mobile vertical with pictures */}
+        <div className="lg:hidden space-y-5">
           {stages.map((stage, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, x: -20 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.1 * i }}
-              className="flex gap-4 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm"
+              className="flex gap-4 bg-white border border-slate-200 rounded-2xl p-4 shadow-sm"
             >
-              <div className="flex-shrink-0 w-14 h-14 rounded-full bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center relative">
-                <stage.icon className="w-6 h-6 text-primary" />
-                <span className="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-primary text-white text-[10px] font-bold flex items-center justify-center">
+              <div className="flex-shrink-0 relative w-24 h-24 rounded-2xl overflow-hidden ring-2 ring-emerald-100">
+                <img
+                  src={stage.image}
+                  alt={stage.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover"
+                />
+                <span className="absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full bg-primary text-white text-[11px] font-extrabold flex items-center justify-center shadow ring-2 ring-white">
                   {i + 1}
                 </span>
               </div>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <h3 className="font-heading text-base font-bold mb-1.5">{stage.title}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed">{stage.desc}</p>
               </div>
@@ -350,7 +406,7 @@ const About = () => {
         }
         description="Migration is more than movement — it is about health, safety, and continuity of care. MEDIHUB is Sri Lanka's first dedicated Migration Health Hub."
         breadcrumb="About"
-        imageSrc="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=1400&q=80"
+        imageSrc="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1400&q=80"
         imageAlt="MEDIHUB clinical care"
       />
       <Intro />

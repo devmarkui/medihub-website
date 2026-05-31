@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -9,22 +9,49 @@ import {
   ShieldCheck,
   Menu,
   X,
+  CalendarClock,
+  MessageCircle,
 } from "lucide-react";
 import { useAdminData } from "@/contexts/AdminDataContext";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-const navItems = [
-  { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
-  { to: "/admin/announcement", label: "Announcement", icon: Megaphone, end: false },
-  { to: "/admin/doctors", label: "Doctors", icon: Stethoscope, end: false },
-];
+type NavItem = {
+  to: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  end: boolean;
+  /** Optional value to surface as a pill (e.g. pending count). */
+  badge?: number;
+};
 
 export const AdminLayout = () => {
-  const { logout } = useAdminData();
+  const { logout, appointments } = useAdminData();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const pendingCount = useMemo(
+    () => appointments.filter((a) => a.status === "pending").length,
+    [appointments]
+  );
+
+  const navItems: NavItem[] = useMemo(
+    () => [
+      { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
+      {
+        to: "/admin/appointments",
+        label: "Appointments",
+        icon: CalendarClock,
+        end: false,
+        badge: pendingCount,
+      },
+      { to: "/admin/announcement", label: "Announcement", icon: Megaphone, end: false },
+      { to: "/admin/doctors", label: "Doctors", icon: Stethoscope, end: false },
+      { to: "/admin/notifications", label: "WhatsApp", icon: MessageCircle, end: false },
+    ],
+    [pendingCount]
+  );
 
   const handleLogout = () => {
     logout();
@@ -36,7 +63,11 @@ export const AdminLayout = () => {
     <div className="min-h-screen flex bg-slate-50">
       {/* ── Sidebar (desktop) ─────────────────────────────────────────── */}
       <aside className="hidden lg:flex lg:flex-col w-64 border-r border-slate-200 bg-white">
-        <SidebarContents onLogout={handleLogout} onNavigate={() => {}} />
+        <SidebarContents
+          navItems={navItems}
+          onLogout={handleLogout}
+          onNavigate={() => {}}
+        />
       </aside>
 
       {/* ── Mobile sidebar drawer ─────────────────────────────────────── */}
@@ -48,6 +79,7 @@ export const AdminLayout = () => {
           />
           <aside className="relative w-72 max-w-[85vw] bg-white border-r border-slate-200 flex flex-col">
             <SidebarContents
+              navItems={navItems}
               onLogout={handleLogout}
               onNavigate={() => setMobileOpen(false)}
             />
@@ -100,9 +132,11 @@ export const AdminLayout = () => {
 
 // ── Sidebar inner contents ─────────────────────────────────────────────────
 const SidebarContents = ({
+  navItems,
   onLogout,
   onNavigate,
 }: {
+  navItems: NavItem[];
   onLogout: () => void;
   onNavigate: () => void;
 }) => (
@@ -132,7 +166,7 @@ const SidebarContents = ({
     </div>
 
     {/* Nav */}
-    <nav className="flex-1 p-3 space-y-1">
+    <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
       {navItems.map((item) => (
         <NavLink
           key={item.to}
@@ -156,10 +190,14 @@ const SidebarContents = ({
                   isActive ? "text-primary" : "text-slate-500 group-hover:text-slate-700"
                 )}
               />
-              <span>{item.label}</span>
-              {isActive && (
-                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-primary" />
-              )}
+              <span className="flex-1">{item.label}</span>
+              {item.badge && item.badge > 0 ? (
+                <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold">
+                  {item.badge}
+                </span>
+              ) : isActive ? (
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              ) : null}
             </>
           )}
         </NavLink>

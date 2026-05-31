@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Plane, Mail, Phone, MapPin, ArrowRight, Facebook, Instagram, Linkedin } from "lucide-react";
+import { Plane, Mail, Phone, MapPin, ArrowRight, Facebook, Instagram, Linkedin, Smartphone, Apple } from "lucide-react";
 
 const navLinks = [
   { label: "Home", to: "/" },
@@ -49,6 +49,76 @@ const Footer = () => (
           >
             Explore Services
           </Link>
+        </div>
+      </div>
+
+      {/* App promotion strip */}
+      <div className="relative grid lg:grid-cols-[1.4fr_1fr] gap-8 items-center py-12 border-b border-white/10">
+        <div className="relative">
+          <span className="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-400/30 rounded-full px-3 py-1 mb-4">
+            <Smartphone className="w-3.5 h-3.5 text-emerald-300" />
+            <span className="text-[11px] font-bold text-emerald-200 uppercase tracking-widest">
+              MEDIHUB Mobile App
+            </span>
+          </span>
+          <h3 className="font-heading text-2xl sm:text-3xl font-extrabold leading-tight mb-3">
+            Care in your pocket —{" "}
+            <span className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
+              download the MEDIHUB app.
+            </span>
+          </h3>
+          <p className="text-white/65 text-sm sm:text-base leading-relaxed max-w-xl">
+            Book appointments, access your medical records, download reports, and chat with our health team — all from one secure app.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-3 lg:justify-end">
+          {/* Google Play */}
+          <a
+            href="#"
+            aria-label="Get it on Google Play"
+            className="group inline-flex items-center gap-3 bg-black hover:bg-slate-900 border border-white/15 rounded-2xl px-5 py-3 transition-all hover:-translate-y-0.5 shadow-lg shadow-black/30"
+          >
+            <svg viewBox="0 0 48 48" className="w-8 h-8 flex-shrink-0" aria-hidden="true">
+              <linearGradient id="play1" x1="6" y1="6" x2="42" y2="42" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stopColor="#00C2FF"/>
+                <stop offset="1" stopColor="#0072FF"/>
+              </linearGradient>
+              <linearGradient id="play2" x1="22" y1="24" x2="42" y2="24" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stopColor="#FFCE00"/>
+                <stop offset="1" stopColor="#FFB400"/>
+              </linearGradient>
+              <linearGradient id="play3" x1="22" y1="24" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stopColor="#FF3A44"/>
+                <stop offset="1" stopColor="#C31162"/>
+              </linearGradient>
+              <linearGradient id="play4" x1="22" y1="24" x2="38" y2="10" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stopColor="#00F076"/>
+                <stop offset="1" stopColor="#00B14F"/>
+              </linearGradient>
+              <path d="M7.2 5.6c-.5.4-.8 1-.8 1.8v33.2c0 .8.3 1.4.8 1.8L25 24 7.2 5.6z" fill="url(#play1)"/>
+              <path d="M30.4 18.6L25 24l5.4 5.4 9-5.1c1.4-.8 1.4-2.8 0-3.6l-9-2.1z" fill="url(#play2)"/>
+              <path d="M30.4 29.4L25 24 7.2 42.4c.7.5 1.6.5 2.5 0l20.7-12z" fill="url(#play3)"/>
+              <path d="M9.7 5.6c-.9-.5-1.9-.5-2.5 0L25 24l5.4-5.4-20.7-13z" fill="url(#play4)"/>
+            </svg>
+            <div className="text-left leading-tight">
+              <div className="text-[10px] font-semibold text-white/70 uppercase tracking-wider">Get it on</div>
+              <div className="font-heading text-base font-extrabold text-white">Google Play</div>
+            </div>
+          </a>
+
+          {/* App Store */}
+          <a
+            href="#"
+            aria-label="Download on the App Store"
+            className="group inline-flex items-center gap-3 bg-black hover:bg-slate-900 border border-white/15 rounded-2xl px-5 py-3 transition-all hover:-translate-y-0.5 shadow-lg shadow-black/30"
+          >
+            <Apple className="w-8 h-8 text-white flex-shrink-0" />
+            <div className="text-left leading-tight">
+              <div className="text-[10px] font-semibold text-white/70 uppercase tracking-wider">Download on the</div>
+              <div className="font-heading text-base font-extrabold text-white">App Store</div>
+            </div>
+          </a>
         </div>
       </div>
 

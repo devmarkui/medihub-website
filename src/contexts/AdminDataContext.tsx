@@ -41,6 +41,67 @@ export interface Doctor {
   featured?: boolean;
 }
 
+// ── Appointment types ──────────────────────────────────────────────────────
+export type AppointmentMode = "consultation" | "migration";
+export type AppointmentStatus =
+  | "pending"
+  | "confirmed"
+  | "rescheduled"
+  | "rejected"
+  | "completed"
+  | "cancelled";
+
+export interface Appointment {
+  id: string;
+  /** ISO timestamp the request was created. */
+  createdAt: string;
+  /** ISO timestamp of the last admin action. */
+  updatedAt: string;
+  mode: AppointmentMode;
+  /** Patient details captured on the booking form. */
+  name: string;
+  phone: string;
+  email: string;
+  service: string;
+  destination?: string;
+  /** Preferred (initial) date — yyyy-mm-dd. */
+  preferredDate: string;
+  /** Preferred time — HH:mm (consultation only). */
+  preferredTime: string;
+  notes: string;
+  status: AppointmentStatus;
+  /** Final confirmed date once admin acts. May differ from preferredDate. */
+  scheduledDate?: string;
+  scheduledTime?: string;
+  /** Optional admin note attached to the latest status change. */
+  adminNote?: string;
+  /** Audit log of admin actions. */
+  history: AppointmentHistoryEntry[];
+}
+
+export interface AppointmentHistoryEntry {
+  at: string;
+  status: AppointmentStatus;
+  message: string;
+  notifiedUser: boolean;
+}
+
+// ── WhatsApp / notification settings ───────────────────────────────────────
+export type NotificationMode = "disabled" | "cloud-api" | "deeplink";
+
+export interface NotificationSettings {
+  /** How notifications are actually delivered. */
+  mode: NotificationMode;
+  /** MEDIHUB's primary WhatsApp number — used for sending and receiving. */
+  medihubNumber: string;
+  /** POST endpoint that forwards payloads to the WhatsApp Business Cloud API. */
+  webhookUrl: string;
+  /** Whether to also send status-update messages to the patient. */
+  notifyPatient: boolean;
+  /** Display name used at the top of every message ("MEDIHUB"). */
+  senderName: string;
+}
+
 interface AdminDataContextValue {
   // Announcement
   announcement: Announcement;
@@ -50,6 +111,17 @@ interface AdminDataContextValue {
   addDoctor: (d: Omit<Doctor, "id">) => Doctor;
   updateDoctor: (id: string, patch: Partial<Doctor>) => void;
   deleteDoctor: (id: string) => void;
+  // Appointments
+  appointments: Appointment[];
+  addAppointment: (
+    a: Omit<Appointment, "id" | "createdAt" | "updatedAt" | "status" | "history">
+  ) => Appointment;
+  updateAppointment: (id: string, patch: Partial<Appointment>) => void;
+  deleteAppointment: (id: string) => void;
+  appendAppointmentHistory: (id: string, entry: AppointmentHistoryEntry) => void;
+  // Notifications (WhatsApp)
+  notificationSettings: NotificationSettings;
+  setNotificationSettings: (s: NotificationSettings) => void;
   // Auth
   isAuthenticated: boolean;
   login: (password: string) => boolean;
@@ -61,7 +133,9 @@ interface AdminDataContextValue {
 // ── Constants ──────────────────────────────────────────────────────────────
 const STORAGE_KEYS = {
   announcement: "medihub:announcement",
-  doctors: "medihub:doctors",
+  doctors: "medihub:doctors:v3",
+  appointments: "medihub:appointments:v1",
+  notificationSettings: "medihub:notification-settings:v1",
   auth: "medihub:admin-auth",
 } as const;
 
@@ -84,8 +158,7 @@ const defaultDoctors: Doctor[] = [
     id: "doc-perera",
     name: "Dr. Anjali Perera",
     specialty: "Migration Health Specialist",
-    photo:
-      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80",
+    photo: "/doctor-female.svg",
     bio: "Leads MEDIHUB's migration medicine programme — visa medicals, fitness-to-fly assessments and pre-departure care for outbound workers.",
     qualifications: "MBBS, MD (Public Health), FRCP (UK)",
     yearsExperience: 15,
@@ -96,8 +169,7 @@ const defaultDoctors: Doctor[] = [
     id: "doc-wickramasinghe",
     name: "Dr. Ranjith Wickramasinghe",
     specialty: "General Medicine & Travel Medicine",
-    photo:
-      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80",
+    photo: "/doctor-male.svg",
     bio: "Twenty years of frontline care, with deep expertise in travel medicine, vaccinations and chronic condition management for migrant workers.",
     qualifications: "MBBS, MRCP (UK), Diploma in Travel Medicine",
     yearsExperience: 20,
@@ -107,8 +179,7 @@ const defaultDoctors: Doctor[] = [
     id: "doc-rathnayake",
     name: "Dr. Niluka Rathnayake",
     specialty: "Family Physician",
-    photo:
-      "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&q=80",
+    photo: "/doctor-female.svg",
     bio: "Family medicine consultant focused on women's health, paediatric care and inbound migrant health screenings.",
     qualifications: "MBBS, MD (Family Medicine)",
     yearsExperience: 12,
@@ -118,14 +189,27 @@ const defaultDoctors: Doctor[] = [
     id: "doc-jayasinghe",
     name: "Dr. Saman Jayasinghe",
     specialty: "Pulmonologist",
-    photo:
-      "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=600&q=80",
+    photo: "/doctor-male.svg",
     bio: "Consultant pulmonologist managing respiratory health, TB screening and pre-employment chest assessments for international workforces.",
     qualifications: "MBBS, MD (Respiratory Medicine), FCCP",
     yearsExperience: 18,
     languages: ["English", "Sinhala"],
   },
 ];
+
+/**
+ * MEDIHUB's primary WhatsApp number. All booking notifications are sent
+ * to this number and all patient status-updates are sent from it.
+ */
+export const MEDIHUB_WHATSAPP = "+94112267777";
+
+const defaultNotificationSettings: NotificationSettings = {
+  mode: "deeplink",
+  medihubNumber: MEDIHUB_WHATSAPP,
+  webhookUrl: "",
+  notifyPatient: true,
+  senderName: "MEDIHUB",
+};
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 const readJSON = <T,>(key: string, fallback: T): T => {
@@ -149,6 +233,9 @@ const writeJSON = (key: string, value: unknown) => {
   }
 };
 
+const makeId = (prefix: string) =>
+  `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+
 // ── Context ────────────────────────────────────────────────────────────────
 const AdminDataContext = createContext<AdminDataContextValue | null>(null);
 
@@ -159,6 +246,13 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
   const [doctors, setDoctorsState] = useState<Doctor[]>(() =>
     readJSON(STORAGE_KEYS.doctors, defaultDoctors)
   );
+  const [appointments, setAppointmentsState] = useState<Appointment[]>(() =>
+    readJSON(STORAGE_KEYS.appointments, [] as Appointment[])
+  );
+  const [notificationSettings, setNotificationSettingsState] =
+    useState<NotificationSettings>(() =>
+      readJSON(STORAGE_KEYS.notificationSettings, defaultNotificationSettings)
+    );
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
     return localStorage.getItem(STORAGE_KEYS.auth) === "true";
@@ -167,27 +261,30 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
   // Persist on change
   useEffect(() => writeJSON(STORAGE_KEYS.announcement, announcement), [announcement]);
   useEffect(() => writeJSON(STORAGE_KEYS.doctors, doctors), [doctors]);
+  useEffect(() => writeJSON(STORAGE_KEYS.appointments, appointments), [appointments]);
+  useEffect(
+    () => writeJSON(STORAGE_KEYS.notificationSettings, notificationSettings),
+    [notificationSettings]
+  );
 
   // Cross-tab sync — public site picks up admin edits without a refresh.
   useEffect(() => {
     const onStorage = (e: StorageEvent) => {
       if (!e.key) return;
-      if (e.key === STORAGE_KEYS.announcement && e.newValue) {
-        try {
+      try {
+        if (e.key === STORAGE_KEYS.announcement && e.newValue) {
           setAnnouncementState(JSON.parse(e.newValue));
-        } catch {
-          /* ignore parse errors */
-        }
-      }
-      if (e.key === STORAGE_KEYS.doctors && e.newValue) {
-        try {
+        } else if (e.key === STORAGE_KEYS.doctors && e.newValue) {
           setDoctorsState(JSON.parse(e.newValue));
-        } catch {
-          /* ignore parse errors */
+        } else if (e.key === STORAGE_KEYS.appointments && e.newValue) {
+          setAppointmentsState(JSON.parse(e.newValue));
+        } else if (e.key === STORAGE_KEYS.notificationSettings && e.newValue) {
+          setNotificationSettingsState(JSON.parse(e.newValue));
+        } else if (e.key === STORAGE_KEYS.auth) {
+          setIsAuthenticated(e.newValue === "true");
         }
-      }
-      if (e.key === STORAGE_KEYS.auth) {
-        setIsAuthenticated(e.newValue === "true");
+      } catch {
+        /* ignore parse errors */
       }
     };
     window.addEventListener("storage", onStorage);
@@ -199,10 +296,7 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const addDoctor = useCallback((d: Omit<Doctor, "id">) => {
-    const newDoc: Doctor = {
-      ...d,
-      id: `doc-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
-    };
+    const newDoc: Doctor = { ...d, id: makeId("doc") };
     setDoctorsState((prev) => [...prev, newDoc]);
     return newDoc;
   }, []);
@@ -215,6 +309,65 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
 
   const deleteDoctor = useCallback((id: string) => {
     setDoctorsState((prev) => prev.filter((d) => d.id !== id));
+  }, []);
+
+  const addAppointment = useCallback(
+    (
+      a: Omit<Appointment, "id" | "createdAt" | "updatedAt" | "status" | "history">
+    ) => {
+      const now = new Date().toISOString();
+      const created: Appointment = {
+        ...a,
+        id: makeId("apt"),
+        createdAt: now,
+        updatedAt: now,
+        status: "pending",
+        history: [
+          {
+            at: now,
+            status: "pending",
+            message: "Booking request received from website.",
+            notifiedUser: false,
+          },
+        ],
+      };
+      setAppointmentsState((prev) => [created, ...prev]);
+      return created;
+    },
+    []
+  );
+
+  const updateAppointment = useCallback((id: string, patch: Partial<Appointment>) => {
+    setAppointmentsState((prev) =>
+      prev.map((a) =>
+        a.id === id ? { ...a, ...patch, updatedAt: new Date().toISOString() } : a
+      )
+    );
+  }, []);
+
+  const deleteAppointment = useCallback((id: string) => {
+    setAppointmentsState((prev) => prev.filter((a) => a.id !== id));
+  }, []);
+
+  const appendAppointmentHistory = useCallback(
+    (id: string, entry: AppointmentHistoryEntry) => {
+      setAppointmentsState((prev) =>
+        prev.map((a) =>
+          a.id === id
+            ? {
+                ...a,
+                history: [...a.history, entry],
+                updatedAt: new Date().toISOString(),
+              }
+            : a
+        )
+      );
+    },
+    []
+  );
+
+  const setNotificationSettings = useCallback((s: NotificationSettings) => {
+    setNotificationSettingsState(s);
   }, []);
 
   const login = useCallback((password: string) => {
@@ -234,6 +387,8 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
   const resetAllData = useCallback(() => {
     setAnnouncementState(defaultAnnouncement);
     setDoctorsState(defaultDoctors);
+    setAppointmentsState([]);
+    setNotificationSettingsState(defaultNotificationSettings);
   }, []);
 
   return (
@@ -245,6 +400,13 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
         addDoctor,
         updateDoctor,
         deleteDoctor,
+        appointments,
+        addAppointment,
+        updateAppointment,
+        deleteAppointment,
+        appendAppointmentHistory,
+        notificationSettings,
+        setNotificationSettings,
         isAuthenticated,
         login,
         logout,

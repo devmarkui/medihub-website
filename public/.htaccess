@@ -1,0 +1,43 @@
+# ── MEDIHUB single-page-app hosting config (Apache / LiteSpeed / cPanel) ──────
+# This file is copied into the build (dist/) automatically. Upload it together
+# with the rest of the site so deep links and refreshes work correctly.
+
+# 1) Client-side routing: send every request that is NOT a real file/folder
+#    to index.html, so /about, /services, /admin, etc. load instead of 404.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  # Don't rewrite requests for files or directories that actually exist.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+  # Everything else -> index.html (React Router takes over from there).
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# 2) Keep the admin area out of search engines (was in vercel.json before).
+<IfModule mod_headers.c>
+  <If "%{REQUEST_URI} =~ m#^/admin#">
+    Header set X-Robots-Tag "noindex, nofollow, noarchive"
+    Header set X-Frame-Options "DENY"
+    Header set Referrer-Policy "no-referrer"
+  </If>
+</IfModule>
+
+# 3) Compress text assets for faster loading.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+# 4) Cache static assets aggressively (filenames are content-hashed by Vite).
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 6 months"
+  ExpiresByType image/png "access plus 6 months"
+  ExpiresByType image/svg+xml "access plus 6 months"
+  ExpiresByType image/x-icon "access plus 6 months"
+  # Never cache the HTML entry point so users always get the latest app.
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>

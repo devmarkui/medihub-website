@@ -18,6 +18,10 @@ import {
   Globe2,
   Briefcase,
   Plane,
+  Moon,
+  Landmark,
+  Sparkles,
+  Ship,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
@@ -30,7 +34,7 @@ const simpleLinks = [
 const migrantItems = [
   { label: "Outbound Services", desc: "Visa medicals & pre-departure care for going abroad", to: "/services?tab=outbound", icon: PlaneTakeoff },
   { label: "Inbound Services", desc: "Arrival check-ups & integration care in Sri Lanka", to: "/services?tab=inbound", icon: PlaneLanding },
-  { label: "General Services", desc: "Bookings, records, payments & support", to: "/services?tab=general", icon: Briefcase },
+  { label: "Corporate Programmes", desc: "Pre-employment programmes & recruitment-agency partnerships", to: "/services?tab=corporate", icon: Briefcase },
 ];
 
 const laboratoryItems = [
@@ -48,6 +52,12 @@ const travelsItems = [
   { label: "Local Travelers", desc: "Travel health for domestic journeys", to: "/travels?tab=local", icon: MapPin },
   { label: "International Travelers", desc: "Pre-travel consultations & vaccines for overseas trips", to: "/travels?tab=international", icon: Globe2 },
   { label: "General Traveler Services", desc: "Appointments, records & travel health info", to: "/travels?tab=general", icon: Compass },
+];
+
+const touristMedicalItems = [
+  { label: "Seafarer Medical", desc: "MLC 2006 / ILO seafarer fitness exams & certification", to: "/travels?tab=seafarer", icon: Ship },
+  { label: "Haj & Umrah", desc: "Pilgrim health prep, vaccines & fitness clearance", to: "/travels?tab=haj-umrah", icon: Moon },
+  { label: "Dambadeniya", desc: "Tourist medical services around Dambadeniya", to: "/travels?tab=dambadeniya", icon: Landmark },
 ];
 
 const Navbar = ({ onBookClick }: { onBookClick: () => void }) => {
@@ -207,7 +217,7 @@ const Navbar = ({ onBookClick }: { onBookClick: () => void }) => {
                           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-cyan to-primary flex items-center justify-center">
                             <FlaskConical className="w-4 h-4 text-white" />
                           </div>
-                          <h3 className="font-heading text-sm font-extrabold text-foreground uppercase tracking-wider">Laboratory</h3>
+                          <h3 className="font-heading text-sm font-extrabold text-foreground uppercase tracking-wider">Clinic &amp; Laboratory</h3>
                         </div>
                         <ul className="space-y-0.5">
                           {laboratoryItems.map((item) => (
@@ -270,33 +280,64 @@ const Navbar = ({ onBookClick }: { onBookClick: () => void }) => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.98 }}
                     transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[420px] bg-white rounded-3xl border border-border/60 shadow-2xl shadow-primary/10 overflow-hidden"
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[680px] bg-white rounded-3xl border border-border/60 shadow-2xl shadow-primary/10 overflow-hidden"
                   >
-                    <div className="p-6 bg-gradient-to-br from-primary/5 to-brand-cyan/5">
-                      <div className="flex items-center gap-2 mb-4">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-brand-cyan flex items-center justify-center">
-                          <Plane className="w-4 h-4 text-white" />
+                    <div className="grid grid-cols-2">
+                      {/* Travels column */}
+                      <div className="p-6 bg-gradient-to-br from-primary/5 to-brand-cyan/5 border-r border-border/60">
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-brand-cyan flex items-center justify-center">
+                            <Plane className="w-4 h-4 text-white" />
+                          </div>
+                          <h3 className="font-heading text-sm font-extrabold text-foreground uppercase tracking-wider">Travels</h3>
                         </div>
-                        <h3 className="font-heading text-sm font-extrabold text-foreground uppercase tracking-wider">Travels</h3>
+                        <ul className="space-y-1">
+                          {travelsItems.map((item) => (
+                            <li key={item.to}>
+                              <button
+                                onClick={() => goTo(item.to)}
+                                className="w-full text-left flex items-start gap-3 p-3 rounded-xl hover:bg-white hover:shadow-sm transition-all group"
+                              >
+                                <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-white border border-border/50 flex items-center justify-center group-hover:border-primary/40 group-hover:bg-primary/5 transition-colors">
+                                  <item.icon className="w-4 h-4 text-primary" />
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">{item.label}</div>
+                                  <div className="text-xs text-muted-foreground leading-snug mt-0.5">{item.desc}</div>
+                                </div>
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-                      <ul className="space-y-1">
-                        {travelsItems.map((item) => (
-                          <li key={item.to}>
-                            <button
-                              onClick={() => goTo(item.to)}
-                              className="w-full text-left flex items-start gap-3 p-3 rounded-xl hover:bg-white hover:shadow-sm transition-all group"
-                            >
-                              <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-white border border-border/50 flex items-center justify-center group-hover:border-primary/40 group-hover:bg-primary/5 transition-colors">
-                                <item.icon className="w-4 h-4 text-primary" />
-                              </div>
-                              <div className="min-w-0">
-                                <div className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">{item.label}</div>
-                                <div className="text-xs text-muted-foreground leading-snug mt-0.5">{item.desc}</div>
-                              </div>
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
+
+                      {/* Tourist Medical column */}
+                      <div className="p-6">
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+                            <Sparkles className="w-4 h-4 text-white" />
+                          </div>
+                          <h3 className="font-heading text-sm font-extrabold text-foreground uppercase tracking-wider">Tourist Medical</h3>
+                        </div>
+                        <ul className="space-y-1">
+                          {touristMedicalItems.map((item) => (
+                            <li key={item.to}>
+                              <button
+                                onClick={() => goTo(item.to)}
+                                className="w-full text-left flex items-start gap-3 p-3 rounded-xl hover:bg-amber-50/60 hover:shadow-sm transition-all group"
+                              >
+                                <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-white border border-border/50 flex items-center justify-center group-hover:border-amber-400/50 group-hover:bg-amber-50 transition-colors">
+                                  <item.icon className="w-4 h-4 text-amber-600" />
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="font-semibold text-sm text-foreground group-hover:text-amber-700 transition-colors">{item.label}</div>
+                                  <div className="text-xs text-muted-foreground leading-snug mt-0.5">{item.desc}</div>
+                                </div>
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
 
                     <div className="px-6 py-3 bg-muted/40 border-t border-border/60 flex items-center justify-between">
@@ -414,7 +455,7 @@ const Navbar = ({ onBookClick }: { onBookClick: () => void }) => {
                         ))}
                       </div>
                       <div>
-                        <div className="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-primary/70">Laboratory</div>
+                        <div className="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-primary/70">Clinic &amp; Laboratory</div>
                         {laboratoryItems.map((item) => (
                           <button
                             key={item.to}
@@ -451,16 +492,32 @@ const Navbar = ({ onBookClick }: { onBookClick: () => void }) => {
                     className="overflow-hidden"
                   >
                     <div className="pl-4 mt-1 space-y-2">
-                      {travelsItems.map((item) => (
-                        <button
-                          key={item.to}
-                          onClick={() => goTo(item.to)}
-                          className="w-full text-left flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-muted transition-colors"
-                        >
-                          <item.icon className="w-4 h-4 text-primary" />
-                          <span className="text-sm text-foreground">{item.label}</span>
-                        </button>
-                      ))}
+                      <div>
+                        <div className="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-primary/70">Travels</div>
+                        {travelsItems.map((item) => (
+                          <button
+                            key={item.to}
+                            onClick={() => goTo(item.to)}
+                            className="w-full text-left flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-muted transition-colors"
+                          >
+                            <item.icon className="w-4 h-4 text-primary" />
+                            <span className="text-sm text-foreground">{item.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                      <div>
+                        <div className="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-amber-600/80">Tourist Medical</div>
+                        {touristMedicalItems.map((item) => (
+                          <button
+                            key={item.to}
+                            onClick={() => goTo(item.to)}
+                            className="w-full text-left flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-amber-50 transition-colors"
+                          >
+                            <item.icon className="w-4 h-4 text-amber-600" />
+                            <span className="text-sm text-foreground">{item.label}</span>
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </motion.div>
                 )}

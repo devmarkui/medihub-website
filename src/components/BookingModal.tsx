@@ -18,6 +18,8 @@ import {
   MapPin,
   type LucideIcon,
 } from "lucide-react";
+import { useAdminData } from "@/contexts/AdminDataContext";
+import { toast } from "sonner";
 
 export type BookingMode = "consultation" | "migration";
 
@@ -250,8 +252,11 @@ const modeOptions: {
 ];
 
 const BookingModal = ({ isOpen, onClose, prefill }: BookingModalProps) => {
+  const { addAppointment } = useAdminData();
   const [mode, setMode] = useState<BookingMode>("consultation");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [confirmedId, setConfirmedId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -277,6 +282,8 @@ const BookingModal = ({ isOpen, onClose, prefill }: BookingModalProps) => {
     if (!isOpen) {
       const timer = setTimeout(() => {
         setIsSubmitted(false);
+        setConfirmedId(null);
+        setSubmitting(false);
       }, 300);
       return () => clearTimeout(timer);
     }
@@ -288,41 +295,39 @@ const BookingModal = ({ isOpen, onClose, prefill }: BookingModalProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const phoneNumber = "94752977591";
-    const heading =
-      mode === "migration"
-        ? "Migration Health Booking"
-        : "Consultation Booking";
+    if (submitting) return;
 
-    const lines = [
-      `Hello Medi Hub,`,
-      ``,
-      `I'd like to request a *${heading}*.`,
-      ``,
-      `• Name: ${formData.name}`,
-      `• Phone: ${formData.phone}`,
-      `• Email: ${formData.email}`,
-      `• Service: ${formData.service || "Not specified"}`,
-    ];
-
-    if (mode === "migration" && formData.destination) {
-      lines.push(`• Destination / Origin: ${formData.destination}`);
+    // Basic guardrail — name + WhatsApp number are the minimum we need.
+    if (!formData.name.trim() || !formData.phone.trim()) {
+      toast.error("Please add your name and WhatsApp number so we can reach you.");
+      return;
     }
-    if (formData.date) lines.push(`• Preferred date: ${formData.date}`);
-    if (mode === "consultation" && formData.time)
-      lines.push(`• Preferred time: ${formData.time}`);
-    if (formData.message) lines.push(`• Notes: ${formData.message}`);
 
-    lines.push(``, `Please confirm my booking. Thank you.`);
+    setSubmitting(true);
 
-    const encoded = encodeURIComponent(lines.join("\n"));
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encoded}`;
-    window.open(whatsappUrl, "_blank");
+    // Save the request to the admin panel. MEDIHUB will see it under
+    // Appointments and contact the patient on WhatsApp once they
+    // confirm / reschedule / reject the booking.
+    const created = addAppointment({
+      mode,
+      name: formData.name.trim(),
+      phone: formData.phone.trim(),
+      email: formData.email.trim(),
+      service: formData.service.trim(),
+      destination: formData.destination.trim() || undefined,
+      preferredDate: formData.date,
+      preferredTime: mode === "consultation" ? formData.time : "",
+      notes: formData.message.trim(),
+    });
+    setConfirmedId(created.id);
+
+    toast.success("Request sent to MEDIHUB.");
 
     setIsSubmitted(true);
+    setSubmitting(false);
     setTimeout(() => {
       onClose();
-    }, 1800);
+    }, 2400);
   };
 
   return (
@@ -513,7 +518,7 @@ const BookingModal = ({ isOpen, onClose, prefill }: BookingModalProps) => {
                             accentClass={accent}
                           />
                           <FloatingInput
-                            label="Phone Number"
+                            label="WhatsApp Number"
                             type="tel"
                             icon={Phone}
                             placeholder="+94 77 000 0000"
@@ -524,10 +529,10 @@ const BookingModal = ({ isOpen, onClose, prefill }: BookingModalProps) => {
                         </div>
 
                         <FloatingInput
-                          label="Email Address"
+                          label="Email Address (Optional)"
                           type="email"
                           icon={Mail}
-                          placeholder="john@example.com"
+                          placeholder="john@example.com (optional)"
                           value={formData.email}
                           onChange={(val) => setFormData({ ...formData, email: val })}
                           accentClass={accent}
@@ -648,18 +653,18 @@ const BookingModal = ({ isOpen, onClose, prefill }: BookingModalProps) => {
                         <div className="pt-2">
                           <button
                             type="submit"
+                            disabled={submitting}
                             className={`w-full bg-gradient-to-r ${activeOption.gradient} text-white font-bold text-sm py-3.5 rounded-xl shadow-lg ${
                               accent === "blue"
                                 ? "shadow-blue-500/25 hover:shadow-blue-500/40"
                                 : "shadow-emerald-500/25 hover:shadow-emerald-500/40"
-                            } hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2`}
+                            } hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] disabled:opacity-70 disabled:hover:translate-y-0 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2`}
                           >
-                            Send Booking Request
+                            {submitting ? "Sending…" : "Send Booking Request"}
                             <Check size={18} />
                           </button>
                           <p className="text-[10px] text-slate-400 text-center mt-2 leading-relaxed">
-                            By submitting, you agree to be contacted via WhatsApp / phone to
-                            confirm your booking.
+                            By submitting, you agree to be contacted on WhatsApp / phone to confirm your booking.
                           </p>
                         </div>
                       </form>
@@ -692,12 +697,16 @@ const BookingModal = ({ isOpen, onClose, prefill }: BookingModalProps) => {
                         <Check size={32} />
                       </div>
                       <h2 className="text-xl font-extrabold text-slate-900 mb-2">
-                        Request Sent
+                        Request Received
                       </h2>
-                      <p className="text-slate-500 text-sm max-w-[320px]">
-                        We've opened WhatsApp with your booking summary. Our team will confirm
-                        the details shortly.
+                      <p className="text-slate-500 text-sm max-w-[360px] leading-relaxed">
+                        Your request is now with the MEDIHUB team. We'll review it and message you on WhatsApp at <span className="font-semibold text-slate-700">{formData.phone || "your number"}</span> once it's confirmed.
                       </p>
+                      {confirmedId && (
+                        <p className="mt-4 text-[10px] uppercase tracking-widest text-slate-400 font-bold">
+                          Reference · {confirmedId.toUpperCase()}
+                        </p>
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>

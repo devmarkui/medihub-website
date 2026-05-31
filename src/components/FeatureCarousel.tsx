@@ -36,7 +36,7 @@ const FEATURES: Feature[] = [
     label: "End-to-End Continuum",
     icon: HeartHandshake,
     image:
-      "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?auto=format&fit=crop&w=1200&q=80",
     description:
       "From pre-medicals to destination chronic care — we don't hand you off, we walk with you.",
   },

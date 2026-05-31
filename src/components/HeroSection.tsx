@@ -33,7 +33,7 @@ const slides: Slide[] = [
     eyebrow: "Inbound Migrant Health",
     title: (
       <>
-        Just arrived?{" "}
+        Just arrived Sri Lanka?{" "}
         <span className="text-primary">Welcome to expert care.</span>
       </>
     ),
@@ -59,11 +59,11 @@ const slides: Slide[] = [
   },
   {
     image:
-      "https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1920&q=80",
-    eyebrow: "Travel Health",
+      "https://images.unsplash.com/photo-1666214280391-8ff5bd3c0bf0?auto=format&fit=crop&w=1920&q=80",
+    eyebrow: "Travel Health Consultation",
     title: (
       <>
-        Healthy journeys.{" "}
+        Expert consultations.{" "}
         <span className="text-primary">Anywhere you go.</span>
       </>
     ),
@@ -149,7 +149,8 @@ const HeroSection = ({ onBookClick }: { onBookClick: () => void }) => {
               loading="eager"
               decoding="async"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-dark/90 via-slate-dark/75 to-slate-dark/40" />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-dark/70 via-slate-dark/45 to-slate-dark/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-dark/40 via-transparent to-transparent" />
           </motion.div>
         </AnimatePresence>
       </div>

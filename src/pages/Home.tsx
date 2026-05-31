@@ -390,11 +390,13 @@ const JourneyTeaser = () => {
               transition={{ duration: 0.5, delay: 0.1 * i }}
               className="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-emerald-400/40 transition-all duration-500"
             >
-              <div className="font-heading text-5xl font-black bg-gradient-to-br from-emerald-400 to-teal-500 bg-clip-text text-transparent mb-3">
+              <div className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-emerald-500/15 border border-emerald-400/30 font-heading text-sm font-bold text-emerald-300 mb-4">
                 {stage.num}
               </div>
-              <h3 className="font-heading text-base font-bold mb-2">{stage.title}</h3>
-              <p className="text-xs text-white/60 leading-relaxed">{stage.desc}</p>
+              <h3 className="font-heading text-xl sm:text-2xl font-extrabold mb-2 text-white leading-tight">
+                {stage.title}
+              </h3>
+              <p className="text-sm text-white/70 leading-relaxed">{stage.desc}</p>
               {i < stages.length - 1 && (
                 <ArrowRight className="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-400/40 group-hover:text-emerald-400 transition-colors" />
               )}

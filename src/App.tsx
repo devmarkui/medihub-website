@@ -16,6 +16,8 @@ import AdminLayout from "@/pages/admin/AdminLayout";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminAnnouncement from "@/pages/admin/AdminAnnouncement";
 import AdminDoctors from "@/pages/admin/AdminDoctors";
+import AdminAppointments from "@/pages/admin/AdminAppointments";
+import AdminNotifications from "@/pages/admin/AdminNotifications";
 import RequireAuth from "@/pages/admin/RequireAuth";
 
 const queryClient = new QueryClient();
@@ -47,8 +49,10 @@ const App = () => (
               }
             >
               <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/appointments" element={<AdminAppointments />} />
               <Route path="/admin/announcement" element={<AdminAnnouncement />} />
               <Route path="/admin/doctors" element={<AdminDoctors />} />
+              <Route path="/admin/notifications" element={<AdminNotifications />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />

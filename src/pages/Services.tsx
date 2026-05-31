@@ -44,6 +44,7 @@ import {
   LifeBuoy,
   UserCog,
   FilePlus2,
+  ArrowRight,
 } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import { CardStack } from "@/components/CardStack";
@@ -96,7 +97,7 @@ const migrantServices = [
   { icon: Activity, image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80", title: "Travel Fitness Assessment", short: "Confirms you're medically fit for the journey — issued with a certificate.", desc: "Clinical assessment to confirm you are medically fit for the journey. Considers travel duration, transit conditions, existing conditions, and destination health risks — issued as a Travel Fitness Certificate." },
   { icon: PlaneTakeoff, image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80", title: "Fitness to Fly", short: "Airline-accepted Fit-to-Fly clearance for medically sensitive flyers.", desc: "Specialized assessment for passengers with conditions affected by air travel — post-surgical, cardiac, respiratory patients, or those recently hospitalized. We issue Fit-to-Fly documentation accepted by major airlines." },
   { icon: ClipboardCheck, image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1200&q=80", title: "MEDIF (Medical Information Form)", short: "IATA MEDIF completion for in-flight medical, oxygen, or wheelchair support.", desc: "Completion and facilitation of IATA's Medical Information Form — required by airlines for passengers needing in-flight medical support, oxygen, stretcher service, or wheelchair assistance." },
-  { icon: Activity, image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=1200&q=80", title: "Continued Health Management", short: "Ongoing care and medication continuity for chronic conditions abroad.", desc: "For migrants with chronic conditions like diabetes, hypertension, or asthma — structured ongoing care, adequate medication supply, and coordination with healthcare providers at the destination." },
+  { icon: Activity, image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?auto=format&fit=crop&w=1200&q=80", title: "Continued Health Management", short: "Ongoing care and medication continuity for chronic conditions abroad.", desc: "For migrants with chronic conditions like diabetes, hypertension, or asthma — structured ongoing care, adequate medication supply, and coordination with healthcare providers at the destination." },
   { icon: Headphones, image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&q=80", title: "Travel Assistance", short: "24/7 health assistance and embassy liaison while you're in transit or abroad.", desc: "24/7 travel health assistance for migrants in transit or at destination — coordination with international assistance networks, emergency guidance, and liaison with embassies and employers." },
   { icon: UserCheck, image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=1200&q=80", title: "Medical Escorts", short: "Trained doctors or nurses who travel with you for clinical monitoring.", desc: "Trained doctors or nurses who accompany medically vulnerable passengers — providing clinical monitoring, medication administration, and emergency response throughout the journey." },
   { icon: Syringe, image: "https://images.unsplash.com/photo-1632053001113-df97cf03307c?auto=format&fit=crop&w=1200&q=80", title: "Pre-departure Vaccination", short: "Destination-specific vaccines with IHR-compliant certification.", desc: "Destination-specific vaccination programmes by our travel medicine team — Yellow Fever, Hepatitis A/B, Typhoid, Meningitis, and certified IHR-compliant vaccination documentation." },
@@ -107,8 +108,8 @@ const migrantServices = [
 const inboundServices = [
   { icon: ClipboardList, image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1000&q=80", en: { title: "Health Check-ups for Inbound Migrants", desc: "Comprehensive arrival health assessments — general physical examination, baseline laboratory investigations, and identification of pre-existing or travel-acquired conditions requiring follow-up." }, zh: { title: "入境移民健康检查", desc: "全面的入境健康评估 — 一般体格检查、基础实验室检验，以及识别需要随访的既往或旅行相关疾病。" } },
   { icon: Lightbulb, image: "https://images.unsplash.com/photo-1581595220892-b0739db3ba8c?auto=format&fit=crop&w=1000&q=80", en: { title: "Health Advisory", desc: "Personalized health orientation for newly arrived migrants — local health risks, safe food and water practices, climate adaptation, healthcare facility guidance, and access to local health systems." }, zh: { title: "健康咨询", desc: "为新抵达的移民提供个性化健康指导 — 当地健康风险、安全饮食饮水、气候适应、医疗设施使用以及医疗系统获取指南。" } },
-  { icon: Syringe, image: "https://images.unsplash.com/photo-1632053001113-df97cf03307c?auto=format&fit=crop&w=1000&q=80", en: { title: "Vaccination Services", desc: "Review of vaccine history and administration of required or recommended immunizations — protection against endemic diseases and meeting vaccination compliance for residency or employment." }, zh: { title: "疫苗接种服务", desc: "审查疫苗接种史并提供所需或建议的免疫接种 — 预防地方流行病并满足居留或就业的疫苗合规要求。" } },
-  { icon: HeartPulse, image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=1000&q=80", en: { title: "Chronic Medical Condition Management", desc: "Ongoing clinical management for migrants with pre-existing chronic conditions — consultation, medication management, specialist referrals, and coordination with home-country physicians." }, zh: { title: "慢性疾病管理", desc: "为患有既往慢性疾病的移民提供持续的临床管理 — 咨询、用药管理、专科转诊以及与原籍国医生的协调。" } },
+  { icon: Syringe, image: "https://images.unsplash.com/photo-1605289982774-9a6fef564df8?auto=format&fit=crop&w=1200&q=80", en: { title: "Vaccination Services", desc: "Review of vaccine history and administration of required or recommended immunizations — protection against endemic diseases and meeting vaccination compliance for residency or employment." }, zh: { title: "疫苗接种服务", desc: "审查疫苗接种史并提供所需或建议的免疫接种 — 预防地方流行病并满足居留或就业的疫苗合规要求。" } },
+  { icon: HeartPulse, image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?auto=format&fit=crop&w=1200&q=80", en: { title: "Chronic Medical Condition Management", desc: "Ongoing clinical management for migrants with pre-existing chronic conditions — consultation, medication management, specialist referrals, and coordination with home-country physicians." }, zh: { title: "慢性疾病管理", desc: "为患有既往慢性疾病的移民提供持续的临床管理 — 咨询、用药管理、专科转诊以及与原籍国医生的协调。" } },
   { icon: Plane, image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1000&q=80", en: { title: "Travel Assistance", desc: "Health-related travel support for inbound migrants who need onward travel within the region — fitness assessments, documentation, and liaison with transport providers for medical needs." }, zh: { title: "旅行协助", desc: "为需要在区域内继续旅行的入境移民提供健康相关支持 — 健康评估、文件办理及与运输方就医疗需求的协调。" } },
   { icon: Video, image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=1000&q=80", en: { title: "Telehealth Services", desc: "Secure virtual consultations for migrants who cannot attend in person — follow-up appointments, medication reviews, mental health support, and health advice from anywhere in the country." }, zh: { title: "远程医疗服务", desc: "为无法亲临的移民提供安全的线上咨询 — 随访预约、用药复查、心理健康支持，全国任何地方均可获得健康建议。" } },
 ];
@@ -300,17 +301,17 @@ const inboundMigrantServices: ServiceGridItem[] = [
   { icon: Globe2, title: "Travel Health Advice", desc: "Preventive health guidance related to destination-specific risks and safe travel." },
 ];
 
-/* ---- migrant general services (screenshot-driven) ---- */
-
-const migrantGeneralServices: ServiceGridItem[] = [
-  { icon: Calendar, title: "Appointment Booking", desc: "Online and onsite scheduling for medical examinations and consultations." },
-  { icon: FilePlus2, title: "Online Registration", desc: "Digital registration system for faster processing and service access." },
-  { icon: FileSearch, title: "Medical Records Access", desc: "Secure access to medical reports, vaccination records, and health documents." },
-  { icon: Download, title: "Report Download", desc: "Download certified medical reports and investigation results online." },
-  { icon: CreditCard, title: "Payment Portal", desc: "Secure online payment system for medical and laboratory services." },
-  { icon: LifeBuoy, title: "Help Desk", desc: "Assistance for service inquiries, appointments, and application guidance." },
-  { icon: PhoneCall, title: "Contact Support", desc: "Communication support through phone, email, or online messaging services." },
-  { icon: MessagesSquare, title: "Feedback & Complaints", desc: "Platform for submitting feedback, suggestions, and service-related concerns." },
+/* Picture-rich version of the inbound catalogue */
+const inboundMigrantServicesWithImages = [
+  { icon: ClipboardCheck, title: "Arrival Health Screening", desc: "Health screening for newly arrived migrants, travelers, or returning residents.", image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80" },
+  { icon: Activity, title: "Communicable Disease Screening", desc: "Detection and management of infectious diseases to support public health safety.", image: "https://images.unsplash.com/photo-1579165466741-7f35e4755660?auto=format&fit=crop&w=1200&q=80" },
+  { icon: Syringe, title: "Vaccination Verification", desc: "Verification and updating of immunization records according to national guidelines.", image: "https://images.unsplash.com/photo-1632053002434-aab1ec2300c0?auto=format&fit=crop&w=1200&q=80" },
+  { icon: Stethoscope, title: "Health Consultation", desc: "General medical consultation and advice for migrants and international travelers.", image: "https://images.unsplash.com/photo-1666214280391-8ff5bd3c0bf0?auto=format&fit=crop&w=1200&q=80" },
+  { icon: HeartPulse, title: "Chronic Disease Follow-Up", desc: "Monitoring and management support for ongoing medical conditions such as diabetes or hypertension.", image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1200&q=80" },
+  { icon: Brain, title: "Mental Health Support", desc: "Psychological support and referral services for migrant wellbeing and adjustment.", image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&q=80" },
+  { icon: Siren, title: "Emergency Medical Support", desc: "Immediate medical assistance and coordination during urgent health situations.", image: "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=1200&q=80" },
+  { icon: UserCog, title: "Referral Services", desc: "Coordination with hospitals, clinics, and specialists for advanced medical care.", image: "https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=1200&q=80" },
+  { icon: Globe2, title: "Travel Health Advice", desc: "Preventive health guidance related to destination-specific risks and safe travel.", image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80" },
 ];
 
 /* ------------------ tabs ------------------ */
@@ -318,9 +319,8 @@ const migrantGeneralServices: ServiceGridItem[] = [
 const tabs = [
   { id: "outbound", label: "Outbound", icon: PlaneTakeoff, accent: "from-emerald-500 to-teal-600", group: "Migrant" },
   { id: "inbound", label: "Inbound", icon: PlaneLanding, accent: "from-blue-500 to-cyan-600", group: "Migrant" },
-  { id: "general", label: "General", icon: Briefcase, accent: "from-teal-500 to-emerald-600", group: "Migrant" },
   { id: "corporate", label: "Corporate", icon: Building2, accent: "from-amber-500 to-orange-600", group: "Migrant" },
-  { id: "clinic", label: "Laboratory", icon: Microscope, accent: "from-blue-500 to-cyan-600", group: "Laboratory" },
+  { id: "clinic", label: "Clinic & Laboratory", icon: Microscope, accent: "from-blue-500 to-cyan-600", group: "Laboratory" },
 ];
 
 const TabNav = ({ active, setActive }: { active: string; setActive: (v: string) => void }) => (
@@ -893,70 +893,95 @@ const InboundBlock = () => {
       </div>
     </section>
 
-    <ServiceGrid
-      eyebrow="Complete Inbound Service Catalogue"
-      title={
-        <>
-          Care for those{" "}
-          <span className="bg-gradient-to-r from-blue-500 to-cyan-600 bg-clip-text text-transparent">
-            arriving here.
-          </span>
-        </>
-      }
-      description="The full set of inbound migrant services — from arrival screening to ongoing care and emergency support."
-      items={inboundMigrantServices}
-      accent="blue"
-      background="white"
-      columns={3}
-    />
+    <InboundCatalogue />
     </>
   );
 };
 
-/* ------------------ migrant general ------------------ */
+/* ------------------ picture-style inbound catalogue ------------------ */
 
-const MigrantGeneralBlock = ({ onBook }: { onBook: LayoutContext["openBooking"] }) => {
+const InboundCatalogue = () => {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <>
-      <ServiceGrid
-        eyebrow="Migrant General Services"
-        title={
-          <>
-            Everything you need —{" "}
-            <span className="bg-gradient-to-r from-teal-500 to-emerald-600 bg-clip-text text-transparent">
-              in one place.
-            </span>
-          </>
-        }
-        description="Bookings, records, payments, and support — the operational backbone that makes accessing your migrant health services effortless."
-        items={migrantGeneralServices}
-        accent="teal"
-        background="white"
-        columns={4}
-      />
+    <section ref={ref} className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white via-blue-50/40 to-white relative overflow-hidden">
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-100/50 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-cyan-100/40 rounded-full blur-[140px] pointer-events-none" />
 
-      <section ref={ref} className="pb-20 px-4 sm:px-6 lg:px-8 bg-white">
+      <div className="max-w-7xl mx-auto relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="max-w-3xl mx-auto bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border border-teal-200 rounded-3xl p-8 text-center"
+          transition={{ duration: 0.6 }}
+          className="text-center mb-14 max-w-2xl mx-auto"
         >
-          <h3 className="font-heading text-2xl font-extrabold text-slate-900 mb-3">Need help getting started?</h3>
-          <p className="text-slate-600 text-sm mb-6">Our help desk and contact support are available to guide you through every step.</p>
-          <button
-            onClick={() => onBook()}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:-translate-y-0.5 transition-transform"
-          >
-            <Calendar className="w-4 h-4" />
-            Book an appointment
-          </button>
+          <span className="inline-block text-xs uppercase tracking-[0.3em] font-bold text-blue-600 mb-4">
+            ✦ Complete Inbound Service Catalogue ✦
+          </span>
+          <h2 className="font-heading text-4xl sm:text-5xl font-extrabold text-slate-900 mb-5 leading-tight">
+            Care for those{" "}
+            <span className="bg-gradient-to-r from-blue-500 to-cyan-600 bg-clip-text text-transparent">
+              arriving here.
+            </span>
+          </h2>
+          <p className="text-lg text-slate-600">
+            The full set of inbound migrant services — from arrival screening to ongoing care and emergency support.
+          </p>
         </motion.div>
-      </section>
-    </>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {inboundMigrantServicesWithImages.map((svc, i) => (
+            <motion.article
+              key={svc.title}
+              initial={{ opacity: 0, y: 26 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.55, delay: 0.06 * i, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -8 }}
+              className="group relative bg-white rounded-3xl overflow-hidden border border-slate-200 hover:border-blue-300 shadow-sm hover:shadow-2xl hover:shadow-blue-500/15 transition-all duration-500"
+            >
+              {/* Picture */}
+              <div className="relative h-56 overflow-hidden">
+                <img
+                  src={svc.image}
+                  alt={svc.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
+                {/* Floating icon badge */}
+                <div className="absolute top-4 left-4 w-12 h-12 rounded-2xl bg-white/95 backdrop-blur-sm shadow-xl flex items-center justify-center">
+                  <svc.icon className="w-5 h-5 text-blue-600" />
+                </div>
+                {/* Number chip */}
+                <div className="absolute top-4 right-4 inline-flex items-center px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/30 text-[10px] font-bold uppercase tracking-widest text-white">
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+                {/* Title overlaid */}
+                <div className="absolute inset-x-0 bottom-0 p-5">
+                  <h3 className="font-heading text-lg sm:text-xl font-extrabold text-white leading-tight drop-shadow-md">
+                    {svc.title}
+                  </h3>
+                </div>
+              </div>
+
+              {/* Body */}
+              <div className="p-6">
+                <p className="text-sm text-slate-600 leading-relaxed">{svc.desc}</p>
+                <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span>Explore</span>
+                  <span className="w-6 h-px bg-blue-500" />
+                </div>
+              </div>
+
+              {/* Left accent bar */}
+              <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </motion.article>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 
@@ -1351,14 +1376,6 @@ const Services = () => {
         </span>
       </>
     ),
-    general: (
-      <>
-        General services —{" "}
-        <span className="bg-gradient-to-r from-teal-400 to-emerald-300 bg-clip-text text-transparent">
-          made simple.
-        </span>
-      </>
-    ),
     corporate: (
       <>
         Moving people at scale?{" "}
@@ -1380,7 +1397,6 @@ const Services = () => {
   const heroDescription: Record<string, string> = {
     outbound: "From visa medicals to complete pre-departure preparation — every form, every screening, every certificate handled by specialists.",
     inbound: "Arrival check-ups, vaccinations, chronic care, and telehealth — supporting your healthy integration into Sri Lanka.",
-    general: "Appointments, records, payments, help desk, and support — the operational backbone of your migrant health journey.",
     corporate: "Pre-employment programmes, group screenings, and recruitment-agency partnerships — built for organizations moving people across borders.",
     clinic: "General consultations, laboratory diagnostics, and family health check-ups — a fully equipped clinic and lab beyond migration medicine.",
   };
@@ -1388,7 +1404,6 @@ const Services = () => {
   const heroImage: Record<string, string> = {
     outbound: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1400&q=80",
     inbound: "https://images.unsplash.com/photo-1632053001113-df97cf03307c?auto=format&fit=crop&w=1400&q=80",
-    general: "https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=1400&q=80",
     corporate: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1400&q=80",
     clinic: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1400&q=80",
   };
@@ -1406,7 +1421,6 @@ const Services = () => {
       <TabNav active={active} setActive={handleSetActive} />
       {active === "outbound" && <OutboundBlock onBook={ctx.openBooking} />}
       {active === "inbound" && <InboundBlock />}
-      {active === "general" && <MigrantGeneralBlock onBook={ctx.openBooking} />}
       {active === "corporate" && <CorporateBlock onBook={ctx.openBooking} />}
       {active === "clinic" && <ClinicBlock onBook={ctx.openBooking} />}
     </>
