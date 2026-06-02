@@ -29,7 +29,7 @@ export const AdminLogin = () => {
     setBusy(true);
     // Tiny artificial delay so the spinner is visible — feels intentional.
     await new Promise((r) => setTimeout(r, 350));
-    const ok = login(password);
+    const ok = await login(password);
     setBusy(false);
     if (ok) {
       toast.success("Welcome back, Admin");
@@ -122,11 +122,10 @@ export const AdminLogin = () => {
 
           <div className="mt-8 pt-6 border-t border-white/10">
             <p className="text-[11px] text-white/50 leading-relaxed">
-              <strong className="text-white/70">Prototype notice:</strong> This
-              console persists data to your browser's local storage. For
-              production, swap the data layer for a real backend (Supabase /
-              Firebase / your own API) and replace this hardcoded password with
-              proper authentication.
+              <strong className="text-white/70">Secure console.</strong>{" "}
+              Announcements and bookings sync to the MEDIHUB server so they're
+              visible across every device. Set your password in{" "}
+              <code className="text-white/70">api/config.php</code>.
             </p>
           </div>
         </div>

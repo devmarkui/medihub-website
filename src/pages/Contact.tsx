@@ -21,29 +21,33 @@ const contactCards = [
   {
     icon: Phone,
     title: "Call us",
-    primary: "+94 (0) 11 MEDI-HUB",
+    primary: "+94 11 226 7777",
     secondary: "24/7 Travel Assistance",
+    href: "tel:+94112267777",
     accent: "from-emerald-500 to-teal-600",
   },
   {
     icon: Mail,
     title: "Email us",
-    primary: "care@medihub.lk",
+    primary: "info@medihub.lk",
     secondary: "We reply within 24 hours",
+    href: "mailto:info@medihub.lk",
     accent: "from-blue-500 to-cyan-600",
   },
   {
     icon: MessageCircle,
     title: "WhatsApp",
-    primary: "+94 (0) 77 000-MEDI",
+    primary: "+94 74 393 6193",
     secondary: "Quick chat support",
+    href: "https://wa.me/94743936193",
     accent: "from-amber-500 to-orange-600",
   },
   {
     icon: MapPin,
     title: "Visit us",
     primary: "Migration Health Centre",
-    secondary: "Colombo, Sri Lanka",
+    secondary: "548/1, Avissawella Road, Wellampitiya",
+    href: "https://maps.app.goo.gl/c65HbJxsjxZFsu4L6",
     accent: "from-rose-500 to-pink-600",
   },
 ];
@@ -194,13 +198,16 @@ const ContactSection = () => {
           className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-20 -mt-32 relative z-10"
         >
           {contactCards.map((card, i) => (
-            <motion.div
+            <motion.a
               key={i}
+              href={card.href}
+              target={card.href.startsWith("http") ? "_blank" : undefined}
+              rel={card.href.startsWith("http") ? "noopener noreferrer" : undefined}
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.1 * i }}
               whileHover={{ y: -8 }}
-              className="group bg-white border border-slate-200 rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden"
+              className="group block bg-white border border-slate-200 rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden"
             >
               <div className={`absolute -top-12 -right-12 w-32 h-32 rounded-full bg-gradient-to-br ${card.accent} opacity-10 group-hover:opacity-20 blur-2xl transition-opacity`} />
               <div className={`relative w-12 h-12 rounded-2xl bg-gradient-to-br ${card.accent} flex items-center justify-center shadow-lg mb-4`}>
@@ -209,7 +216,7 @@ const ContactSection = () => {
               <h3 className="font-heading font-extrabold text-slate-900 text-base mb-1">{card.title}</h3>
               <p className="text-sm font-semibold text-slate-700">{card.primary}</p>
               <p className="text-xs text-slate-500 mt-0.5">{card.secondary}</p>
-            </motion.div>
+            </motion.a>
           ))}
         </motion.div>
 
@@ -249,7 +256,7 @@ const ContactSection = () => {
                   <MapPin className="w-7 h-7 text-white" />
                 </div>
                 <p className="font-heading font-bold text-slate-700">Migration Health Centre</p>
-                <p className="text-xs text-slate-500 mt-1">Colombo, Sri Lanka</p>
+                <p className="text-xs text-slate-500 mt-1">548/1, Avissawella Road, Wellampitiya</p>
               </div>
               {/* Animated pulse */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-12">

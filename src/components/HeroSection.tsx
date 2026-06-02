@@ -230,7 +230,7 @@ const HeroSection = ({ onBookClick }: { onBookClick: () => void }) => {
               ) : (
                 <motion.a
                   key="phone"
-                  href="tel:+1234567890"
+                  href="tel:+94112267777"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 10 }}

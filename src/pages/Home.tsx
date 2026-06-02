@@ -626,7 +626,7 @@ const Home = () => {
     <>
       <ScrollProgress />
       <AmbientOrbs />
-      <HeroSection onBookClick={ctx.openBooking} />
+      <HeroSection onBookClick={() => ctx.openBooking()} />
       <DestinationMarquee />
       <WhatWeDo />
       <Stats />
@@ -634,7 +634,7 @@ const Home = () => {
       <WhyChoose />
       <DoctorsSection />
       <Testimonials />
-      <FinalCTA onBook={ctx.openBooking} />
+      <FinalCTA onBook={() => ctx.openBooking()} />
     </>
   );
 };

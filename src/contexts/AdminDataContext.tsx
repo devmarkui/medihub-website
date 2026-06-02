@@ -3,9 +3,12 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
+import { api, setApiToken, clearApiToken, getApiToken } from "@/lib/api";
+import { toast } from "sonner";
 
 /**
  * AdminDataContext — single source of truth for admin-managed content.
@@ -124,7 +127,7 @@ interface AdminDataContextValue {
   setNotificationSettings: (s: NotificationSettings) => void;
   // Auth
   isAuthenticated: boolean;
-  login: (password: string) => boolean;
+  login: (password: string) => Promise<boolean>;
   logout: () => void;
   // Reset
   resetAllData: () => void;
@@ -203,6 +206,12 @@ const defaultDoctors: Doctor[] = [
  */
 export const MEDIHUB_WHATSAPP = "+94112267777";
 
+/**
+ * MEDIHUB's WhatsApp business line. New website bookings are sent here so
+ * the team receives the request as a WhatsApp message on submit.
+ */
+export const MEDIHUB_BOOKING_WHATSAPP = "+94743936193";
+
 const defaultNotificationSettings: NotificationSettings = {
   mode: "deeplink",
   medihubNumber: MEDIHUB_WHATSAPP,
@@ -253,10 +262,26 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
     useState<NotificationSettings>(() =>
       readJSON(STORAGE_KEYS.notificationSettings, defaultNotificationSettings)
     );
+  // Authenticated only when BOTH the auth flag AND a session token are present.
+  // This forces a fresh login (to obtain a token) for any old session that was
+  // signed in before the backend existed — otherwise admin saves would 401.
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
-    return localStorage.getItem(STORAGE_KEYS.auth) === "true";
+    return (
+      localStorage.getItem(STORAGE_KEYS.auth) === "true" && !!getApiToken()
+    );
   });
+
+  // Latest appointments + doctors, readable synchronously inside callbacks (so
+  // we can push the full, up-to-date list to the backend without stale closures).
+  const appointmentsRef = useRef<Appointment[]>(appointments);
+  useEffect(() => {
+    appointmentsRef.current = appointments;
+  }, [appointments]);
+  const doctorsRef = useRef<Doctor[]>(doctors);
+  useEffect(() => {
+    doctorsRef.current = doctors;
+  }, [doctors]);
 
   // Persist on change
   useEffect(() => writeJSON(STORAGE_KEYS.announcement, announcement), [announcement]);
@@ -291,24 +316,90 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener("storage", onStorage);
   }, []);
 
+  // Pull the live announcement + doctors from the backend so EVERY visitor
+  // (any device) sees what the admin published — not just the browser it was
+  // set in. Doctors returns null until the admin first saves, in which case
+  // we keep the built-in defaults.
+  useEffect(() => {
+    let cancelled = false;
+    api.getAnnouncement().then((a) => {
+      if (!cancelled && a) setAnnouncementState(a);
+    });
+    api.getDoctors().then((list) => {
+      if (!cancelled && list) setDoctorsState(list);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // When signed in, keep the appointments list in sync with the server so
+  // bookings made on any device show up here. Refresh on focus + on a timer.
+  const refreshAppointments = useCallback(async () => {
+    const list = await api.getAppointments();
+    if (list) setAppointmentsState(list);
+  }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    refreshAppointments();
+    const id = window.setInterval(refreshAppointments, 20000);
+    const onFocus = () => refreshAppointments();
+    window.addEventListener("focus", onFocus);
+    return () => {
+      window.clearInterval(id);
+      window.removeEventListener("focus", onFocus);
+    };
+  }, [isAuthenticated, refreshAppointments]);
+
+  // Pull admin notification settings once signed in (admin-only endpoint).
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    let cancelled = false;
+    api.getSettings().then((s) => {
+      if (!cancelled && s) setNotificationSettingsState(s);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthenticated]);
+
+  // Surface a clear error when a write doesn't reach the server, instead of
+  // failing silently (the usual cause is an expired/missing login token).
+  const reportSaved = (ok: boolean, what: string) => {
+    if (!ok) {
+      toast.error(`Couldn't save ${what} to the server`, {
+        description: "You may have been signed out — sign in again and retry.",
+      });
+    }
+  };
+
   const setAnnouncement = useCallback((a: Announcement) => {
     setAnnouncementState(a);
+    // Publish to the backend so it's visible site-wide.
+    api.saveAnnouncement(a).then((ok) => reportSaved(ok, "the announcement"));
   }, []);
 
   const addDoctor = useCallback((d: Omit<Doctor, "id">) => {
     const newDoc: Doctor = { ...d, id: makeId("doc") };
-    setDoctorsState((prev) => [...prev, newDoc]);
+    const next = [...doctorsRef.current, newDoc];
+    setDoctorsState(next);
+    api.saveDoctors(next).then((ok) => reportSaved(ok, "doctors"));
     return newDoc;
   }, []);
 
   const updateDoctor = useCallback((id: string, patch: Partial<Doctor>) => {
-    setDoctorsState((prev) =>
-      prev.map((d) => (d.id === id ? { ...d, ...patch } : d))
+    const next = doctorsRef.current.map((d) =>
+      d.id === id ? { ...d, ...patch } : d
     );
+    setDoctorsState(next);
+    api.saveDoctors(next).then((ok) => reportSaved(ok, "doctors"));
   }, []);
 
   const deleteDoctor = useCallback((id: string) => {
-    setDoctorsState((prev) => prev.filter((d) => d.id !== id));
+    const next = doctorsRef.current.filter((d) => d.id !== id);
+    setDoctorsState(next);
+    api.saveDoctors(next).then((ok) => reportSaved(ok, "doctors"));
   }, []);
 
   const addAppointment = useCallback(
@@ -332,46 +423,75 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
         ],
       };
       setAppointmentsState((prev) => [created, ...prev]);
+      // Send the booking to the backend so it reaches the admin panel on any
+      // device. Fire-and-forget — the WhatsApp notification is the primary
+      // delivery path, this just makes it appear in the dashboard too.
+      api.createAppointment(created);
       return created;
     },
     []
   );
 
   const updateAppointment = useCallback((id: string, patch: Partial<Appointment>) => {
-    setAppointmentsState((prev) =>
-      prev.map((a) =>
-        a.id === id ? { ...a, ...patch, updatedAt: new Date().toISOString() } : a
-      )
-    );
+    const current = appointmentsRef.current.find((a) => a.id === id);
+    if (!current) return;
+    const updated: Appointment = {
+      ...current,
+      ...patch,
+      updatedAt: new Date().toISOString(),
+    };
+    setAppointmentsState((prev) => prev.map((a) => (a.id === id ? updated : a)));
+    api.updateAppointment(id, updated).then((ok) => reportSaved(ok, "the appointment"));
   }, []);
 
   const deleteAppointment = useCallback((id: string) => {
     setAppointmentsState((prev) => prev.filter((a) => a.id !== id));
+    api.deleteAppointment(id);
   }, []);
 
   const appendAppointmentHistory = useCallback(
     (id: string, entry: AppointmentHistoryEntry) => {
-      setAppointmentsState((prev) =>
-        prev.map((a) =>
-          a.id === id
-            ? {
-                ...a,
-                history: [...a.history, entry],
-                updatedAt: new Date().toISOString(),
-              }
-            : a
-        )
-      );
+      const current = appointmentsRef.current.find((a) => a.id === id);
+      if (!current) return;
+      const updated: Appointment = {
+        ...current,
+        history: [...current.history, entry],
+        updatedAt: new Date().toISOString(),
+      };
+      setAppointmentsState((prev) => prev.map((a) => (a.id === id ? updated : a)));
+      api.updateAppointment(id, updated).then((ok) => reportSaved(ok, "the appointment"));
     },
     []
   );
 
   const setNotificationSettings = useCallback((s: NotificationSettings) => {
     setNotificationSettingsState(s);
+    api.saveSettings(s).then((ok) => reportSaved(ok, "notification settings"));
   }, []);
 
-  const login = useCallback((password: string) => {
+  const login = useCallback(async (password: string) => {
+    // Primary path: validate against the backend, which returns a session
+    // token used to authorize admin reads/writes.
+    const result = await api.login(password);
+
+    if (typeof result === "string") {
+      // Got a token — real backend login succeeded.
+      setApiToken(result);
+      localStorage.setItem(STORAGE_KEYS.auth, "true");
+      setIsAuthenticated(true);
+      return true;
+    }
+
+    if (result === null) {
+      // Backend reachable but rejected the password.
+      return false;
+    }
+
+    // result === "unreachable" — no backend (e.g. local `vite dev`). Fall back
+    // to the local password check so development/offline use still works.
     if (password === ADMIN_PASSWORD) {
+      // Sentinel token so a reload still counts as authenticated offline.
+      setApiToken("local-dev-fallback");
       localStorage.setItem(STORAGE_KEYS.auth, "true");
       setIsAuthenticated(true);
       return true;
@@ -380,6 +500,7 @@ export const AdminDataProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const logout = useCallback(() => {
+    clearApiToken();
     localStorage.removeItem(STORAGE_KEYS.auth);
     setIsAuthenticated(false);
   }, []);

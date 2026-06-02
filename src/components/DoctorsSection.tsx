@@ -12,7 +12,7 @@ import {
 import { useAdminData, type Doctor } from "@/contexts/AdminDataContext";
 import ExpandOnHover, { type ExpandCardItem } from "@/components/ui/expand-cards";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { cn } from "@/lib/utils";
+import { cn, doctorPhoto } from "@/lib/utils";
 
 type LayoutContext = { openBooking: (service?: string, mode?: "consultation" | "migration") => void };
 
@@ -33,7 +33,7 @@ export const DoctorsSection = () => {
     () =>
       doctors.map((doctor) => ({
         id: doctor.id,
-        image: doctor.photo,
+        image: doctorPhoto(doctor),
         alt: doctor.name,
         expandedContent: (
           <ExpandedDoctor doctor={doctor} onBook={ctx.openBooking} />

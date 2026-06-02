@@ -40,7 +40,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { cn } from "@/lib/utils";
+import { cn, doctorPhoto } from "@/lib/utils";
 import { toast } from "sonner";
 
 type FormState = Omit<Doctor, "id" | "languages"> & {
@@ -213,7 +213,7 @@ const AdminDoctorCard = ({
   <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white hover:shadow-md hover:border-slate-300 transition-all">
     <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
       <img
-        src={doctor.photo}
+        src={doctorPhoto(doctor)}
         alt={doctor.name}
         loading="lazy"
         className="absolute inset-0 h-full w-full object-cover"
@@ -385,7 +385,6 @@ const DoctorFormDialog = ({
     // Minimal validation
     if (!form.name.trim()) return toast.error("Name is required");
     if (!form.specialty.trim()) return toast.error("Specialty is required");
-    if (!form.photo.trim()) return toast.error("Photo is required");
     if (!form.qualifications.trim()) return toast.error("Qualifications are required");
 
     const languages = form.languagesText
@@ -419,7 +418,10 @@ const DoctorFormDialog = ({
           {/* Photo */}
           <div className="space-y-3">
             <Label className="text-xs uppercase tracking-widest font-bold text-slate-500">
-              Photo
+              Photo{" "}
+              <span className="text-slate-400 font-normal normal-case">
+                (optional)
+              </span>
             </Label>
             <div className="aspect-square rounded-xl bg-slate-100 border border-slate-200 overflow-hidden relative">
               {form.photo ? (
