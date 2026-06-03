@@ -166,7 +166,7 @@ const HeroSection = ({ onBookClick }: { onBookClick: () => void }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-7 mt-12"
+              className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-5 mt-4 sm:mb-7 sm:mt-12"
             >
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span className="text-sm text-white/90 font-medium">{slide.eyebrow}</span>
@@ -180,7 +180,7 @@ const HeroSection = ({ onBookClick }: { onBookClick: () => void }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.55, delay: 0.05 }}
-              className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] mb-5"
+              className="font-heading text-[2rem] sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.15] sm:leading-[1.1] mb-4 sm:mb-5"
             >
               {slide.title}
             </motion.h1>
@@ -193,7 +193,7 @@ const HeroSection = ({ onBookClick }: { onBookClick: () => void }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.55, delay: 0.1 }}
-              className="text-lg text-white/80 max-w-lg mb-9 leading-relaxed"
+              className="text-base sm:text-lg text-white/80 max-w-lg mb-7 sm:mb-9 leading-relaxed"
             >
               {slide.description}
             </motion.p>
@@ -203,9 +203,9 @@ const HeroSection = ({ onBookClick }: { onBookClick: () => void }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-wrap items-center gap-3"
+            className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3"
           >
-            <button onClick={onBookClick} className="btn-primary">
+            <button onClick={onBookClick} className="btn-primary w-full sm:w-auto justify-center">
               <Calendar className="w-5 h-5" />
               Book Appointment
             </button>
@@ -221,7 +221,7 @@ const HeroSection = ({ onBookClick }: { onBookClick: () => void }) => {
                 >
                   <Link
                     to={slide.cta.to}
-                    className="inline-flex items-center gap-2 bg-white text-slate-900 font-semibold px-5 py-2.5 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+                    className="inline-flex w-full sm:w-auto justify-center items-center gap-2 bg-white text-slate-900 font-semibold px-5 py-3 sm:py-2.5 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
                   >
                     {slide.cta.label}
                     <ArrowRight className="w-4 h-4" />
@@ -235,7 +235,7 @@ const HeroSection = ({ onBookClick }: { onBookClick: () => void }) => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 10 }}
                   transition={{ duration: 0.4 }}
-                  className="btn-outline !border-white/30 !text-white hover:!bg-white/10 hover:!border-white/50"
+                  className="btn-outline w-full sm:w-auto justify-center !border-white/30 !text-white hover:!bg-white/10 hover:!border-white/50"
                 >
                   <Phone className="w-5 h-5" />
                   Travel Assistance 24/7
@@ -274,7 +274,7 @@ const HeroSection = ({ onBookClick }: { onBookClick: () => void }) => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-12 sm:mt-16 bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-4 sm:p-6 max-w-2xl"
+          className="mt-9 sm:mt-16 bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-4 sm:p-6 max-w-2xl"
         >
           <div className="grid grid-cols-3 divide-x divide-white/15">
             {stats.map((stat, i) => (

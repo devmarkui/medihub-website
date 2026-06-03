@@ -23,7 +23,7 @@ const PageHero = ({
   imageAlt = "MEDIHUB clinical team",
 }: PageHeroProps) => {
   return (
-    <section className="relative overflow-visible bg-brand-dark min-h-[680px] lg:min-h-[720px]">
+    <section className="relative overflow-hidden bg-brand-dark min-h-[480px] sm:min-h-[680px] lg:min-h-[720px]">
       {/* ── Full-bleed background image with slow Ken Burns ── */}
       <motion.div
         initial={{ opacity: 0, scale: 1.08 }}
@@ -67,7 +67,7 @@ const PageHero = ({
       <div className="absolute top-3 sm:top-5 lg:top-6 inset-x-20 sm:inset-x-32 lg:inset-x-44 h-px bg-gradient-to-r from-transparent via-brand-cyan/50 to-transparent" />
 
       {/* ── Content ── */}
-      <div className="relative pt-32 lg:pt-40 pb-28 lg:pb-36 max-w-7xl mx-auto px-6 sm:px-10 lg:px-14">
+      <div className="relative pt-24 sm:pt-32 lg:pt-40 pb-16 sm:pb-28 lg:pb-36 max-w-7xl mx-auto px-5 sm:px-10 lg:px-14">
         <div className="max-w-3xl">
           <motion.nav
             initial={{ opacity: 0, y: 10 }}
@@ -100,7 +100,7 @@ const PageHero = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="font-heading text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-[1.04] tracking-tight mb-7 drop-shadow-[0_4px_30px_rgba(0,0,0,0.45)]"
+            className="font-heading text-[2rem] sm:text-5xl lg:text-7xl font-extrabold text-white leading-[1.08] sm:leading-[1.04] tracking-tight mb-5 sm:mb-7 drop-shadow-[0_4px_30px_rgba(0,0,0,0.45)]"
           >
             {title}
           </motion.h1>

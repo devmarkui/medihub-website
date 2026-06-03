@@ -116,13 +116,13 @@ const Navbar = ({ onBookClick }: { onBookClick: () => void }) => {
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-[72px] sm:h-[88px] lg:h-[100px]">
-          <Link to="/" className="flex items-center gap-0 group pl-0 sm:pl-2 lg:pl-4 -my-6">
+          <Link to="/" className="flex items-center gap-0 group -my-2 lg:-my-6">
             <img
               src="/medihub_logo.png"
               alt="MediHub Logo"
-              className="h-40 sm:h-44 lg:h-48 w-auto object-contain"
+              className="h-16 sm:h-20 lg:h-48 w-auto object-contain"
             />
           </Link>
 
@@ -383,7 +383,7 @@ const Navbar = ({ onBookClick }: { onBookClick: () => void }) => {
           </div>
 
           <button
-            className={`lg:hidden p-2 mr-3 sm:mr-4 rounded-lg transition-colors ${
+            className={`lg:hidden p-2 -mr-1 rounded-lg transition-colors ${
               scrolled ? "text-foreground hover:bg-muted" : "text-white hover:bg-white/10"
             }`}
             onClick={() => setMobileOpen(!mobileOpen)}

@@ -67,6 +67,17 @@
     @apply bg-background text-foreground font-body antialiased relative;
   }
 
+  /* Clip stray horizontal overflow from decorative blobs and wide hero artwork
+     so the page never scrolls sideways on any device — phones, tablets, and
+     narrower laptops (e.g. 1280–1440px Windows screens at 125–150% scaling).
+     Only the X-axis is clipped, so vertical `position: sticky` (e.g. the
+     Services tab bar) keeps working, and the page's visual layout is unchanged. */
+  html,
+  body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
   body::before {
     content: '';
     position: fixed;
